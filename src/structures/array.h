@@ -19,6 +19,8 @@ void * array_set(Array *array, size_t index, void *value);
 
 int array_equals(Array *one, Array *another);
 
+Array array_slice(Array *array, size_t begin, size_t end);
+
 void * _memory_alloc_elements(size_t length);
 
 int _is_index_out_of_bounds(Array *array, size_t index);

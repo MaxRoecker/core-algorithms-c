@@ -61,6 +61,20 @@ int array_equals(Array *one, Array *another) {
 }
 
 
+Array array_slice(Array *array, size_t begin, size_t end) {
+  if ((begin > end) || (begin > array->length) || (end > array->length)) {
+    fprintf(stderr, "Begin or End value out of bounds.\n");
+    exit(EXIT_FAILURE);
+  }
+  Array slice = array_create_empty(end - begin);
+  for (size_t i = 0; i < slice.length; i++) {
+    void * slice_value = array_get(array, i + begin);
+    array_set(&slice, i, slice_value);
+  }
+  return slice;
+}
+
+
 void * _memory_alloc_elements(size_t length) {
   return (void *) memory_alloc(sizeof(void *) * length);
 }
