@@ -5,7 +5,7 @@
 #include "../commons/memory.h"
 
 typedef struct Array {
-  void **elements;
+  void **_elements;
   const size_t length;
 } Array;
 

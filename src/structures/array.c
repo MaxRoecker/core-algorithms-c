@@ -5,7 +5,7 @@ Array array_create_empty(size_t length) {
   for (size_t i = 0; i < length; i++) {
     elements[i] = NULL;
   }
-  Array array = {.elements = elements, .length = length};
+  Array array = {._elements = elements, .length = length};
   return array;
 }
 
@@ -15,7 +15,7 @@ Array array_create_from(void **elements, size_t length) {
   for (size_t i = 0; i < length; i++) {
     internal_elements[i] = elements[i];
   }
-  Array array = {.elements = elements, .length = length};
+  Array array = {._elements = elements, .length = length};
   return array;
 }
 
@@ -26,7 +26,7 @@ void * array_get(Array *array, size_t index) {
       stderr, "Index %lu out of bounds %lu to get.\n", index, array->length);
     exit(EXIT_FAILURE);
   }
-  return array->elements[index];
+  return array->_elements[index];
 }
 
 
@@ -36,8 +36,8 @@ void * array_set(Array *array, size_t index, void *value) {
       stderr, "Index %lu out of bounds %lu to set.\n", index, array->length);
     exit(EXIT_FAILURE);
   }
-  void *removed_value = array->elements[index];
-  array->elements[index] = value;
+  void *removed_value = array->_elements[index];
+  array->_elements[index] = value;
   return removed_value;
 }
 
