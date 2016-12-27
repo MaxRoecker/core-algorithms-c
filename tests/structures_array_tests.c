@@ -15,10 +15,12 @@ char comparison_as_integer(void *const one, void *const another) {
 };
 
 void test_creation_destruction() {
-  // 25
+  // 29
   const size_t size = 10;
   Array a = array_create_empty(size);
   Array b = array_create_empty(size);
+  Array c = array_create_empty(0);
+  Array d = array_create_empty(0);
 
   ok(array_lenght(a) == 10, "Must be equal to %lu.", size);
   ok(array_lenght(b) == 10, "Must be equal to %lu.", size);
@@ -29,10 +31,17 @@ void test_creation_destruction() {
     ok(array_get(a, i) == NULL, "Item %lu of b must be NULL.", i);
   }
 
+  ok(array_equals(c, d) == 1, "Empty arrays should be equals.");
+  ok(array_equals(d, c) == 1, "Empty arrays should be equals.");
+
   array_destroy(&a);
   array_destroy(&b);
+  array_destroy(&c);
+  array_destroy(&d);
   ok(a == NULL, "Must be NULL.");
   ok(b == NULL, "Must be NULL.");
+  ok(c == NULL, "Must be NULL.");
+  ok(d == NULL, "Must be NULL.");
 }
 
 void test_get_set() {
@@ -102,7 +111,7 @@ void test_merge() {
 }
 
 int main() {
-  plan(25 + 1 + 3 + 2);
+  plan(29 + 1 + 3 + 2);
 
   test_creation_destruction();
   test_get_set();

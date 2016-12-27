@@ -61,16 +61,19 @@ void *array_set(Array array, size_t index, void *value) {
 unsigned char array_equals(Array one, Array another) {
   unsigned char equality = 0;
   if (array_lenght(one) == array_lenght(another)) {
-    size_t index = 0;
-    void *one_key = array_get(one, index);
-    void *another_key = array_get(another, index);
-    while ((one_key == another_key) && (index < array_lenght(one))) {
-      index += 1;
-      one_key = array_get(one, index);
-      another_key = array_get(another, index);
-    }
-    if (index >= array_lenght(one)) {
+    if (array_lenght(one) == 0) {
       equality = 1;
+    } else {
+      size_t index = 0;
+      void *one_key = array_get(one, index);
+      void *another_key = array_get(another, index);
+      while ((array_get(one, index) == array_get(another, index))
+              && (index < array_lenght(one))) {
+        index += 1;
+      }
+      if (index >= array_lenght(one)) {
+        equality = 1;
+      }
     }
   }
   return equality;
