@@ -21,16 +21,25 @@ char comparison_as_integer(void *const one, void *const another) {
 
 
 void test_insertion_sort(void) {
-  Array sorted = array_create_from(sorted_ints, 10);
-  Array unsorted = array_create_from(unsorted_ints, 10);
+  // 3
   ComparisonFunction comparison = &comparison_as_integer;
-  insertion_sort(&unsorted, comparison);
+  Array sorted = array_create_from(sorted_ints, 10);
 
+  Array unsorted = array_create_from(unsorted_ints, 10);
+  insertion_sort(&unsorted, comparison);
   ok(array_equals(&unsorted, &sorted) == 1, "Must be sorted.");
+
+  Array reverse = array_create_from(reverse_ints, 10);
+  insertion_sort(&reverse, comparison);
+  ok(array_equals(&reverse, &sorted) == 1, "Must be sorted.");
+
+  Array already_sorted = array_create_from(sorted_ints, 10);
+  insertion_sort(&already_sorted, comparison);
+  ok(array_equals(&already_sorted, &sorted) == 1, "Must be sorted.");
 }
 
 int main() {
-  plan(1);
+  plan(3);
 
   test_insertion_sort();
 
