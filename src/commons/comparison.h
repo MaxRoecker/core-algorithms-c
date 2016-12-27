@@ -9,7 +9,7 @@
     * 0, if the first element is equals to the second;
     * -1, if the first element is smaller than the second;
 */
-typedef char (*basic_comparison)(void * const, void * const);
+typedef char (*ComparisonFunction)(void * const, void * const);
 
 
 /**
@@ -20,6 +20,6 @@ typedef char (*basic_comparison)(void * const, void * const);
     * positive, the first element is greater than the second;
     * negative, the first element is smaller than the second;
 */
-typedef double (*distance_comparison)(void * const, void * const);
+typedef double (*DistanceFunction)(void * const, void * const);
 
 #endif

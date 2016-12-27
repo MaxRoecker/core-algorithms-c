@@ -2,8 +2,8 @@
 #define ARRAY_H
 #include <stdlib.h>
 #include <stdio.h>
-#include "../commons/comparison.h"
 #include "../commons/memory.h"
+#include "../commons/comparison.h"
 
 typedef struct Array {
   void **_elements;
@@ -22,7 +22,7 @@ int array_equals(Array *one, Array *another);
 
 Array array_slice(Array *array, size_t begin, size_t end);
 
-Array array_merge(Array *one, Array *another, basic_comparison comparison);
+Array array_merge(Array *one, Array *another, ComparisonFunction comparison);
 
 void * _memory_alloc_elements(size_t length);
 

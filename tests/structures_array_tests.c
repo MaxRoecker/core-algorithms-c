@@ -8,7 +8,7 @@ int zero = 0,
     three = 3,
     four = 4;
 
-char basic_comparison_as_integer(void *const one, void *const another) {
+char comparison_as_integer(void *const one, void *const another) {
   int one_value = *((int *) one);
   int another_value = *((int *) another);
   return (char) one_value > another_value;
@@ -33,7 +33,7 @@ void test_basics() {
   }
 
   Array d = array_create_from(integers, 5);
-  ok(array_equals(&c, &d) == 1, "Must be true.");
+  ok(array_equals(&c, &d) == 1, "Arrays must be equals.");
 }
 
 void test_splice() {
@@ -57,20 +57,22 @@ void test_splice() {
 }
 
 void test_merge() {
-  // 1
+  // 2
   void *a[] = {&zero, &one, &two, &three, &four};
   void *b[] = {&zero, &two, &four};
   void *c[] = {&one, &three};
   Array complete = array_create_from(a, 5);
   Array one = array_create_from(b, 3);
   Array another = array_create_from(c, 2);
-  basic_comparison comparison = &basic_comparison_as_integer;
-  Array merged = array_merge(&one, &another, comparison);
-  ok(array_equals(&merged, &complete) == 1, "Must be equals.");
+  ComparisonFunction comparison = &comparison_as_integer;
+  Array merged_a = array_merge(&one, &another, comparison);
+  ok(array_equals(&merged_a, &complete) == 1, "Arrays must be equals.");
+  Array merged_b = array_merge(&another, &one, comparison);
+  ok(array_equals(&merged_b, &complete) == 1, "Arrays must be equals.");
 }
 
 int main() {
-  plan(11 + 3 + 1);
+  plan(11 + 3 + 2);
 
   test_basics();
   test_splice();

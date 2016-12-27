@@ -1,6 +1,6 @@
 #include "sorting.h"
 
-void insertion_sort(Array *array, int (*comparison)(void *, void *)) {
+void insertion_sort(Array *array, ComparisonFunction comparison) {
   for (size_t i = 1; i < array->length; i++) {
     void *key = array_get(array, i);
     size_t j = i;

@@ -74,7 +74,7 @@ Array array_slice(Array *array, size_t begin, size_t end) {
   return slice;
 }
 
-Array array_merge(Array *one, Array *another, basic_comparison comparison) {
+Array array_merge(Array *one, Array *another, ComparisonFunction comparison) {
   Array merged_array = array_create_empty(one->length + another->length);
   size_t one_index = 0;
   size_t another_index = 0;
