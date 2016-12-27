@@ -30,4 +30,6 @@ Array array_merge(Array one, Array another, ComparisonFunction comparison);
 
 Array array_copy(Array array);
 
+Array _array_create(size_t length);
+
 #endif

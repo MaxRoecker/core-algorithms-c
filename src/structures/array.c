@@ -1,25 +1,28 @@
 #include "array.h"
 
-Array array_create_empty(size_t length) {
+
+Array _array_create(size_t length) {
   Array array = ((Array) memory_alloc(sizeof(ArrayStruct)));
   void **elements = ((void *) memory_alloc(sizeof(void *) * length));
-  for (size_t array_lenght = 0; array_lenght < length; array_lenght += 1) {
-    elements[array_lenght] = NULL;
-  }
-  array->_length = length;
   array->_elements = elements;
+  array->_length = length;
+  return array;
+}
+
+Array array_create_empty(size_t length) {
+  Array array = _array_create(length);
+  for (size_t i = 0; i < length; i += 1) {
+    array_set(array, i, NULL);
+  }
   return array;
 }
 
 
 Array array_create_from(void **elements, size_t length) {
-  Array array = ((Array) memory_alloc(sizeof(ArrayStruct)));
-  void **internal_elements = ((void *) memory_alloc(sizeof(void *) * length));
-  for (size_t array_lenght = 0; array_lenght < length; array_lenght += 1) {
-    internal_elements[array_lenght] = elements[array_lenght];
+  Array array = _array_create(length);
+  for (size_t i = 0; i < length; i += 1) {
+    array_set(array, i, elements[i]);
   }
-  array->_length = length;
-  array->_elements = internal_elements;
   return array;
 }
 
@@ -89,7 +92,7 @@ Array array_slice(Array array, size_t begin, size_t end) {
     fprintf(stderr, "Begin or end values out of array bounds.\n");
     exit(EXIT_FAILURE);
   }
-  Array slice = array_create_empty(end - begin);
+  Array slice = _array_create(end - begin);
   for (size_t i = 0; i < array_lenght(slice); i += 1) {
     void *value = array_get(array, i + begin);
     array_set(slice, i, value);
@@ -99,8 +102,8 @@ Array array_slice(Array array, size_t begin, size_t end) {
 
 
 Array array_merge(Array one, Array another, ComparisonFunction comparison) {
-  Array merged_array = array_create_empty(
-      array_lenght(one) + array_lenght(another));
+  Array merged_array = _array_create(
+    array_lenght(one) + array_lenght(another));
   size_t i = 0;
   size_t j = 0;
   size_t k = 0;
@@ -133,7 +136,7 @@ Array array_merge(Array one, Array another, ComparisonFunction comparison) {
 
 
 Array array_copy(Array array) {
-  Array copy = array_create_empty(array_lenght(array));
+  Array copy = _array_create(array_lenght(array));
   for (size_t i = 0; i < array_lenght(array); i += 1) {
     void *value = array_get(array, i);
     array_set(copy, i, value);
