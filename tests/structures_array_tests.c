@@ -14,29 +14,45 @@ char comparison_as_integer(void *const one, void *const another) {
   return (char) one_value > another_value;
 };
 
-void test_basics() {
-  // 11
-  Array a = array_create_empty(10);
-  Array b = array_create_empty(10);
-  ok(a.length == 10, "Must be equal.");
-  ok(array_equals(&a, &b) == 1, "Must be true.");
-  ok(array_get(&a, 0) == NULL, "Must be NULL.");
+void test_creation_destruction() {
+  // 25
+  const size_t size = 10;
+  Array a = array_create_empty(size);
+  Array b = array_create_empty(size);
 
-  void *removed_value = array_set(&a, 0, &one);
-  ok(removed_value == NULL, "Must be NULL.");
-  ok(*((int *) array_get(&a, 0)) == one, "Must be 1.");
+  ok(array_lenght(a) == 10, "Must be equal to %lu.", size);
+  ok(array_lenght(b) == 10, "Must be equal to %lu.", size);
+  ok(array_equals(a, b) == 1, "Must be true.");
 
-  void *integers[] = {&zero, &one, &two, &three, &four};
-  Array c = array_create_from(integers, 5);
-  for (size_t i = 0; i < c.length; i++) {
-    ok(array_get(&c, i) == integers[i], "Must be equal.");
+  for (size_t i = 0; i < size; i += 1) {
+    ok(array_get(a, i) == NULL, "Item %lu of a must be NULL.", i);
+    ok(array_get(a, i) == NULL, "Item %lu of b must be NULL.", i);
   }
 
-  Array d = array_create_from(integers, 5);
-  ok(array_equals(&c, &d) == 1, "Arrays must be equals.");
+  array_destroy(&a);
+  array_destroy(&b);
+  ok(a == NULL, "Must be NULL.");
+  ok(b == NULL, "Must be NULL.");
 }
 
-void test_splice() {
+void test_get_set() {
+  // 1
+  void *elements[] = {&zero, &one, &two, &three, &four};
+  Array full = array_create_from(elements, 5);
+  Array empty = array_create_empty(5);
+
+  for (size_t i = 0; i < array_lenght(empty); i += 1) {
+    void * value = array_get(full, i);
+    array_set(empty, i, value);
+  }
+
+  ok(array_equals(empty, full) == 1, "Must be equal.");
+
+  array_destroy(&full);
+  array_destroy(&empty);
+}
+
+void test_slice() {
   // 3
   void *a[] = {&zero, &one, &two, &three, &four};
   void *b[] = {&zero, &one, &two};
@@ -47,13 +63,21 @@ void test_splice() {
   Array infix = array_create_from(c, 3);
   Array suffix = array_create_from(d, 2);
 
-  Array slice_prefix = array_slice(&complete, 0, 3);
-  Array slice_infix = array_slice(&complete, 1, 4);
-  Array slice_suffix = array_slice(&complete, 3, 5);
+  Array slice_prefix = array_slice(complete, 0, 3);
+  Array slice_infix = array_slice(complete, 1, 4);
+  Array slice_suffix = array_slice(complete, 3, 5);
 
-  ok(array_equals(&prefix, &slice_prefix) == 1, "Must be prefix.");
-  ok(array_equals(&infix, &slice_infix) == 1, "Must be prefix.");
-  ok(array_equals(&suffix, &slice_suffix) == 1, "Must be prefix.");
+  ok(array_equals(prefix, slice_prefix) == 1, "Must be prefix.");
+  ok(array_equals(infix, slice_infix) == 1, "Must be prefix.");
+  ok(array_equals(suffix, slice_suffix) == 1, "Must be prefix.");
+
+  array_destroy(&complete);
+  array_destroy(&prefix);
+  array_destroy(&infix);
+  array_destroy(&suffix);
+  array_destroy(&slice_prefix);
+  array_destroy(&slice_infix);
+  array_destroy(&slice_suffix);
 }
 
 void test_merge() {
@@ -65,17 +89,24 @@ void test_merge() {
   Array one = array_create_from(b, 3);
   Array another = array_create_from(c, 2);
   ComparisonFunction comparison = &comparison_as_integer;
-  Array merged_a = array_merge(&one, &another, comparison);
-  ok(array_equals(&merged_a, &complete) == 1, "Arrays must be equals.");
-  Array merged_b = array_merge(&another, &one, comparison);
-  ok(array_equals(&merged_b, &complete) == 1, "Arrays must be equals.");
+
+  Array one_merge = array_merge(one, another, comparison);
+  ok(array_equals(one_merge, complete) == 1, "Arrays must be equals.");
+
+  Array another_merge = array_merge(another, one, comparison);
+  ok(array_equals(another_merge, complete) == 1, "Arrays must be equals.");
+
+  array_destroy(&complete);
+  array_destroy(&one);
+  array_destroy(&another);
 }
 
 int main() {
-  plan(11 + 3 + 2);
+  plan(25 + 1 + 3 + 2);
 
-  test_basics();
-  test_splice();
+  test_creation_destruction();
+  test_get_set();
+  test_slice();
   test_merge();
 
   done_testing();

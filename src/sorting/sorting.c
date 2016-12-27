@@ -1,7 +1,7 @@
 #include "sorting.h"
 
-void insertion_sort(Array *array, ComparisonFunction comparison) {
-  for (size_t i = 1; i < array->length; i++) {
+void insertion_sort(Array array, ComparisonFunction comparison) {
+  for (size_t i = 1; i < array_lenght(array); i++) {
     void *key = array_get(array, i);
     size_t j = i;
     while ((j > 0) && (comparison(array_get(array, j - 1), key))) {

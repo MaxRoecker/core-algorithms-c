@@ -5,34 +5,27 @@
 #include "../commons/memory.h"
 #include "../commons/comparison.h"
 
-typedef struct Array {
-  void **_elements;
-  const size_t length;
-} Array;
+typedef struct {void **_elements; size_t _length;} ArrayStruct;
+
+typedef ArrayStruct * Array;
+
 
 Array array_create_empty(size_t length);
 
 Array array_create_from(void **elements, size_t length);
 
-void * array_get(Array *array, size_t index);
+void array_destroy(Array *array);
 
-void * array_set(Array *array, size_t index, void *value);
+size_t array_lenght(Array array);
 
-int array_equals(Array *one, Array *another);
+void *array_get(Array array, size_t index);
 
-Array array_slice(Array *array, size_t begin, size_t end);
+void *array_set(Array array, size_t index, void *value);
 
-Array array_merge(Array *one, Array *another, ComparisonFunction comparison);
+unsigned char array_equals(Array one, Array another);
 
-void * _memory_alloc_elements(size_t length);
+Array array_slice(Array array, size_t begin, size_t end);
 
-int _is_index_out_of_bounds(Array *array, size_t index);
-
-
-// Array array_create(const element*, const unsigned long int);
-//
-
-
-
+Array array_merge(Array one, Array another, ComparisonFunction comparison);
 
 #endif

@@ -1,39 +1,55 @@
 #include "array.h"
 
 Array array_create_empty(size_t length) {
-  void **elements = _memory_alloc_elements(length);
-  for (size_t i = 0; i < length; i++) {
-    elements[i] = NULL;
+  Array array = ((Array) memory_alloc(sizeof(ArrayStruct)));
+  void **elements = ((void *) memory_alloc(sizeof(void *) * length));
+  for (size_t array_lenght = 0; array_lenght < length; array_lenght += 1) {
+    elements[array_lenght] = NULL;
   }
-  Array array = {._elements = elements, .length = length};
+  array->_length = length;
+  array->_elements = elements;
   return array;
 }
 
 
 Array array_create_from(void **elements, size_t length) {
-  void **internal_elements = _memory_alloc_elements(length);
-  for (size_t i = 0; i < length; i++) {
-    internal_elements[i] = elements[i];
+  Array array = ((Array) memory_alloc(sizeof(ArrayStruct)));
+  void **internal_elements = ((void *) memory_alloc(sizeof(void *) * length));
+  for (size_t array_lenght = 0; array_lenght < length; array_lenght += 1) {
+    internal_elements[array_lenght] = elements[array_lenght];
   }
-  Array array = {._elements = elements, .length = length};
+  array->_length = length;
+  array->_elements = internal_elements;
   return array;
 }
 
 
-void * array_get(Array *array, size_t index) {
-  if (index > array->length) {
+void array_destroy(Array *array) {
+  free((*array)->_elements);
+  free(*array);
+  *(array) = NULL;
+}
+
+
+size_t array_lenght(Array array) {
+  return array->_length;
+}
+
+
+void *array_get(Array array, size_t index) {
+  if (index > array->_length) {
     fprintf(
-      stderr, "Index %lu out of bounds %lu to get.\n", index, array->length);
+      stderr, "Index %lu out of bounds %lu to get.\n", index, array->_length);
     exit(EXIT_FAILURE);
   }
   return array->_elements[index];
 }
 
 
-void * array_set(Array *array, size_t index, void *value) {
-  if (index > array->length) {
+void *array_set(Array array, size_t index, void *value) {
+  if (index > array->_length) {
     fprintf(
-      stderr, "Index %lu out of bounds %lu to set.\n", index, array->length);
+      stderr, "Index %lu out of bounds %lu to set.\n", index, array->_length);
     exit(EXIT_FAILURE);
   }
   void *removed_value = array->_elements[index];
@@ -42,18 +58,18 @@ void * array_set(Array *array, size_t index, void *value) {
 }
 
 
-int array_equals(Array *one, Array *another) {
-  int equality = 0;
-  if (one->length == another->length) {
+unsigned char array_equals(Array one, Array another) {
+  unsigned char equality = 0;
+  if (array_lenght(one) == array_lenght(another)) {
     size_t index = 0;
     void *one_key = array_get(one, index);
     void *another_key = array_get(another, index);
-    while ((one_key == another_key) && (index < one->length)) {
-      index++;
+    while ((one_key == another_key) && (index < array_lenght(one))) {
+      index += 1;
       one_key = array_get(one, index);
       another_key = array_get(another, index);
     }
-    if (index >= one->length) {
+    if (index >= array_lenght(one)) {
       equality = 1;
     }
   }
@@ -61,57 +77,53 @@ int array_equals(Array *one, Array *another) {
 }
 
 
-Array array_slice(Array *array, size_t begin, size_t end) {
-  if ((begin > end) || (begin > array->length) || (end > array->length)) {
-    fprintf(stderr, "Begin or End value out of bounds.\n");
+Array array_slice(Array array, size_t begin, size_t end) {
+  if (begin > end) {
+    fprintf(stderr, "Invalid begin or end values.\n");
+    exit(EXIT_FAILURE);
+  }
+  if ((begin > array_lenght(array)) || (end > array_lenght(array))) {
+    fprintf(stderr, "Begin or end values out of array bounds.\n");
     exit(EXIT_FAILURE);
   }
   Array slice = array_create_empty(end - begin);
-  for (size_t i = 0; i < slice.length; i++) {
-    void * slice_value = array_get(array, i + begin);
-    array_set(&slice, i, slice_value);
+  for (size_t i = 0; i < array_lenght(slice); i += 1) {
+    void *value = array_get(array, i + begin);
+    array_set(slice, i, value);
   }
   return slice;
 }
 
-Array array_merge(Array *one, Array *another, ComparisonFunction comparison) {
-  Array merged_array = array_create_empty(one->length + another->length);
-  size_t one_index = 0;
-  size_t another_index = 0;
-  size_t merge_index = 0;
-  while ((one_index < one->length) && (another_index < another->length)) {
-    void *one_value = array_get(one, one_index);
-    void *another_value = array_get(another, another_index);
-    if (comparison(one_value, another_value) > 0) {
-      array_set(&merged_array, merge_index, another_value);
-      another_index += 1;
+
+Array array_merge(Array one, Array another, ComparisonFunction comparison) {
+  Array merged_array = array_create_empty(
+      array_lenght(one) + array_lenght(another));
+  size_t i = 0;
+  size_t j = 0;
+  size_t k = 0;
+  while ((i < array_lenght(one)) && (j < array_lenght(another))) {
+    void *a = array_get(one, i);
+    void *b = array_get(another, j);
+    if (comparison(a, b) > 0) {
+      array_set(merged_array, k, b);
+      j += 1;
     } else {
-      array_set(&merged_array, merge_index, one_value);
-      one_index += 1;
+      array_set(merged_array, k, a);
+      i += 1;
     }
-    merge_index += 1;
+    k += 1;
   }
-  while (one_index < one->length) {
-    void *one_value = array_get(one, one_index);
-    array_set(&merged_array, merge_index, one_value);
-    merge_index += 1;
-    one_index += 1;
+  while (i < array_lenght(one)) {
+    void *a = array_get(one, i);
+    array_set(merged_array, k, a);
+    k += 1;
+    i += 1;
   }
-  while (another_index < another->length) {
-    void *another_value = array_get(another, another_index);
-    array_set(&merged_array, merge_index, another_value);
-    merge_index += 1;
-    another_index += 1;
+  while (j < array_lenght(another)) {
+    void *b = array_get(another, j);
+    array_set(merged_array, k, b);
+    k += 1;
+    j += 1;
   }
   return merged_array;
-}
-
-
-void * _memory_alloc_elements(size_t length) {
-  return (void *) memory_alloc(sizeof(void *) * length);
-}
-
-
-int _is_index_out_of_bounds(Array *array, size_t index) {
-  return index > array->length;
 }
