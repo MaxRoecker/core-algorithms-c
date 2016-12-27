@@ -1,6 +1,8 @@
 #include "array.h"
 
-
+/**
+ * Create a array with the given lenght, allocating memory.
+ */
 Array _array_create(size_t length) {
   Array array = ((Array) memory_alloc(sizeof(ArrayStruct)));
   void **elements = ((void *) memory_alloc(sizeof(void *) * length));
@@ -9,6 +11,9 @@ Array _array_create(size_t length) {
   return array;
 }
 
+/**
+ * Create a array of NULL with the given lenght.
+ */
 Array array_create_empty(size_t length) {
   Array array = _array_create(length);
   for (size_t i = 0; i < length; i += 1) {
@@ -17,7 +22,9 @@ Array array_create_empty(size_t length) {
   return array;
 }
 
-
+/**
+ * Create a array of the given elements with the given lenght.
+ */
 Array array_create_from(void **elements, size_t length) {
   Array array = _array_create(length);
   for (size_t i = 0; i < length; i += 1) {
@@ -26,19 +33,25 @@ Array array_create_from(void **elements, size_t length) {
   return array;
 }
 
-
+/**
+ * Destroys the array, but not the content it points to; freeing memory.
+ */
 void array_destroy(Array *array) {
   free((*array)->_elements);
   free(*array);
   *(array) = NULL;
 }
 
-
+/**
+ * Returns the length of the given array.
+ */
 size_t array_lenght(Array array) {
   return array->_length;
 }
 
-
+/**
+ * Returns a pointer to indexed element.
+ */
 void *array_get(Array array, size_t index) {
   if (index > array->_length) {
     fprintf(
@@ -48,7 +61,9 @@ void *array_get(Array array, size_t index) {
   return array->_elements[index];
 }
 
-
+/**
+ * Put a pointer to an indexed element.
+ */
 void *array_set(Array array, size_t index, void *value) {
   if (index > array->_length) {
     fprintf(
@@ -60,7 +75,12 @@ void *array_set(Array array, size_t index, void *value) {
   return removed_value;
 }
 
-
+/**
+ * Returns 1 if the array is equal to another. 0 otherwise.
+ *
+ * An array is equal to another only if all its elements are equals, i.e.
+ * all the elements points to the same address.
+ */
 unsigned char array_equals(Array one, Array another) {
   unsigned char equality = 0;
   if (array_lenght(one) == array_lenght(another)) {
@@ -82,7 +102,12 @@ unsigned char array_equals(Array one, Array another) {
   return equality;
 }
 
-
+/**
+ * Returns a shallow copy of a subarray
+ *
+ * An array is equal to another only if all its elements are equals, i.e.
+ * all the elements points to the same address.
+ */
 Array array_slice(Array array, size_t begin, size_t end) {
   if (begin > end) {
     fprintf(stderr, "Invalid begin or end values.\n");
@@ -101,6 +126,9 @@ Array array_slice(Array array, size_t begin, size_t end) {
 }
 
 
+/**
+ * Merge two given arrays based on a comparison function.
+ */
 Array array_merge(Array one, Array another, ComparisonFunction comparison) {
   Array merged_array = _array_create(
     array_lenght(one) + array_lenght(another));
@@ -134,7 +162,11 @@ Array array_merge(Array one, Array another, ComparisonFunction comparison) {
   return merged_array;
 }
 
-
+/**
+ * Return a shallow copy of the array.
+ *
+ * A shallow copy do not copies the content it points to.
+ */
 Array array_copy(Array array) {
   Array copy = _array_create(array_lenght(array));
   for (size_t i = 0; i < array_lenght(array); i += 1) {
