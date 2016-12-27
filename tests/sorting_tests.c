@@ -13,38 +13,61 @@ void *reverse_ints[] = {&nine, &eight, &seven, &six, &five, &four, &three, &two,
                         &one, &zero};
 
 
-char comparison_as_integer(void *const one, void *const another) {
+char compare_ascending(void *const one, void *const another) {
   int one_value = *((int *) one);
   int another_value = *((int *) another);
   return one_value > another_value;
 }
 
+char compare_descending(void *const one, void *const another) {
+  int one_value = *((int *) one);
+  int another_value = *((int *) another);
+  return one_value < another_value;
+}
+
 
 void test_insertion_sort(void) {
-  // 3
-  ComparisonFunction comparison = &comparison_as_integer;
+  // 6
+  ComparisonFunction comparison_asc = &compare_ascending;
+  ComparisonFunction comparison_desc = &compare_descending;
   Array sorted = array_create_from(sorted_ints, 10);
-
-  Array unsorted = array_create_from(unsorted_ints, 10);
-  insertion_sort(unsorted, comparison);
-  ok(array_equals(unsorted, sorted) == 1, "Must be sorted.");
-
   Array reverse = array_create_from(reverse_ints, 10);
-  insertion_sort(reverse, comparison);
-  ok(array_equals(reverse, sorted) == 1, "Must be sorted.");
+  Array unsorted = array_create_from(unsorted_ints, 10);
 
-  Array already_sorted = array_create_from(sorted_ints, 10);
-  insertion_sort(already_sorted, comparison);
-  ok(array_equals(already_sorted, sorted) == 1, "Must be sorted.");
+  Array unsorted_sorted_asc = insertion_sort(unsorted, comparison_asc);
+  Array unsorted_sorted_desc = insertion_sort(unsorted, comparison_desc);
+  ok(array_equals(unsorted_sorted_asc, sorted) == 1,
+     "Must be asceding sorted.");
+  ok(array_equals(unsorted_sorted_desc, reverse) == 1,
+     "Must be descending sorted.");
+
+  Array sorted_sorted_asc = insertion_sort(sorted, comparison_asc);
+  Array sorted_sorted_desc = insertion_sort(sorted, comparison_desc);
+  ok(array_equals(unsorted_sorted_asc, sorted) == 1,
+     "Must be asceding sorted.");
+  ok(array_equals(unsorted_sorted_desc, reverse) == 1,
+     "Must be descending sorted.");
+
+  Array reverse_sorted_asc = insertion_sort(reverse, comparison_asc);
+  Array reverse_sorted_desc = insertion_sort(reverse, comparison_desc);
+  ok(array_equals(unsorted_sorted_asc, sorted) == 1,
+     "Must be asceding sorted.");
+  ok(array_equals(unsorted_sorted_desc, reverse) == 1,
+     "Must be descending sorted.");
 
   array_destroy(&sorted);
-  array_destroy(&unsorted);
   array_destroy(&reverse);
-  array_destroy(&already_sorted);
+  array_destroy(&unsorted);
+  array_destroy(&unsorted_sorted_asc);
+  array_destroy(&unsorted_sorted_desc);
+  array_destroy(&sorted_sorted_asc);
+  array_destroy(&sorted_sorted_desc);
+  array_destroy(&reverse_sorted_asc);
+  array_destroy(&reverse_sorted_desc);
 }
 
 int main() {
-  plan(3);
+  plan(6);
 
   test_insertion_sort();
 

@@ -4,6 +4,6 @@
 #include <stdio.h>
 #include "../structures/array.h"
 
-void insertion_sort(Array array, ComparisonFunction comparison);
+Array insertion_sort(const Array array, ComparisonFunction comparison);
 
 #endif
