@@ -130,3 +130,13 @@ Array array_merge(Array one, Array another, ComparisonFunction comparison) {
   }
   return merged_array;
 }
+
+
+Array array_copy(Array array) {
+  Array copy = array_create_empty(array_lenght(array));
+  for (size_t i = 0; i < array_lenght(array); i += 1) {
+    void *value = array_get(array, i);
+    array_set(copy, i, value);
+  }
+  return copy;
+}

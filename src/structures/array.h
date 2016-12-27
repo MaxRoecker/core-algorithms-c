@@ -28,4 +28,6 @@ Array array_slice(Array array, size_t begin, size_t end);
 
 Array array_merge(Array one, Array another, ComparisonFunction comparison);
 
+Array array_copy(Array array);
+
 #endif

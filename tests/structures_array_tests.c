@@ -31,8 +31,8 @@ void test_creation_destruction() {
     ok(array_get(a, i) == NULL, "Item %lu of b must be NULL.", i);
   }
 
-  ok(array_equals(c, d) == 1, "Empty arrays should be equals.");
-  ok(array_equals(d, c) == 1, "Empty arrays should be equals.");
+  ok(array_equals(c, d) == 1, "Empty arrays must be equals.");
+  ok(array_equals(d, c) == 1, "Empty arrays must be equals.");
 
   array_destroy(&a);
   array_destroy(&b);
@@ -44,18 +44,13 @@ void test_creation_destruction() {
   ok(d == NULL, "Must be NULL.");
 }
 
-void test_get_set() {
+void test_copy() {
   // 1
   void *elements[] = {&zero, &one, &two, &three, &four};
   Array full = array_create_from(elements, 5);
-  Array empty = array_create_empty(5);
+  Array empty = array_copy(full);
 
-  for (size_t i = 0; i < array_lenght(empty); i += 1) {
-    void * value = array_get(full, i);
-    array_set(empty, i, value);
-  }
-
-  ok(array_equals(empty, full) == 1, "Must be equal.");
+  ok(array_equals(empty, full) == 1, "Copied arrays must be equals.");
 
   array_destroy(&full);
   array_destroy(&empty);
@@ -77,8 +72,8 @@ void test_slice() {
   Array slice_suffix = array_slice(complete, 3, 5);
 
   ok(array_equals(prefix, slice_prefix) == 1, "Must be prefix.");
-  ok(array_equals(infix, slice_infix) == 1, "Must be prefix.");
-  ok(array_equals(suffix, slice_suffix) == 1, "Must be prefix.");
+  ok(array_equals(infix, slice_infix) == 1, "Must be infix.");
+  ok(array_equals(suffix, slice_suffix) == 1, "Must be suffix.");
 
   array_destroy(&complete);
   array_destroy(&prefix);
@@ -114,7 +109,7 @@ int main() {
   plan(29 + 1 + 3 + 2);
 
   test_creation_destruction();
-  test_get_set();
+  test_copy();
   test_slice();
   test_merge();
 
