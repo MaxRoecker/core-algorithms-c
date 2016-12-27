@@ -13,7 +13,7 @@ void *reverse_ints[] = {&nine, &eight, &seven, &six, &five, &four, &three, &two,
                         &one, &zero};
 
 
-int compare_as_integer(void *one, void *another) {
+char comparison_as_integer(void *const one, void *const another) {
   int one_value = *((int *) one);
   int another_value = *((int *) another);
   return one_value > another_value;
@@ -23,7 +23,8 @@ int compare_as_integer(void *one, void *another) {
 void test_insertion_sort(void) {
   Array sorted = array_create_from(sorted_ints, 10);
   Array unsorted = array_create_from(unsorted_ints, 10);
-  insertion_sort(&unsorted, &compare_as_integer);
+  ComparisonFunction comparison = &comparison_as_integer;
+  insertion_sort(&unsorted, comparison);
 
   ok(array_equals(&unsorted, &sorted) == 1, "Must be sorted.");
 }
