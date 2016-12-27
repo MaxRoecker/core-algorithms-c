@@ -74,6 +74,38 @@ Array array_slice(Array *array, size_t begin, size_t end) {
   return slice;
 }
 
+Array array_merge(Array *one, Array *another, basic_comparison comparison) {
+  Array merged_array = array_create_empty(one->length + another->length);
+  size_t one_index = 0;
+  size_t another_index = 0;
+  size_t merge_index = 0;
+  while ((one_index < one->length) && (another_index < another->length)) {
+    void *one_value = array_get(one, one_index);
+    void *another_value = array_get(another, another_index);
+    if (comparison(one_value, another_value) > 0) {
+      array_set(&merged_array, merge_index, another_value);
+      another_index += 1;
+    } else {
+      array_set(&merged_array, merge_index, one_value);
+      one_index += 1;
+    }
+    merge_index += 1;
+  }
+  while (one_index < one->length) {
+    void *one_value = array_get(one, one_index);
+    array_set(&merged_array, merge_index, one_value);
+    merge_index += 1;
+    one_index += 1;
+  }
+  while (another_index < another->length) {
+    void *another_value = array_get(another, another_index);
+    array_set(&merged_array, merge_index, another_value);
+    merge_index += 1;
+    another_index += 1;
+  }
+  return merged_array;
+}
+
 
 void * _memory_alloc_elements(size_t length) {
   return (void *) memory_alloc(sizeof(void *) * length);

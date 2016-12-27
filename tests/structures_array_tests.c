@@ -8,6 +8,12 @@ int zero = 0,
     three = 3,
     four = 4;
 
+char basic_comparison_as_integer(void *const one, void *const another) {
+  int one_value = *((int *) one);
+  int another_value = *((int *) another);
+  return (char) one_value > another_value;
+};
+
 void test_basics() {
   // 11
   Array a = array_create_empty(10);
@@ -50,11 +56,25 @@ void test_splice() {
   ok(array_equals(&suffix, &slice_suffix) == 1, "Must be prefix.");
 }
 
+void test_merge() {
+  // 1
+  void *a[] = {&zero, &one, &two, &three, &four};
+  void *b[] = {&zero, &two, &four};
+  void *c[] = {&one, &three};
+  Array complete = array_create_from(a, 5);
+  Array one = array_create_from(b, 3);
+  Array another = array_create_from(c, 2);
+  basic_comparison comparison = &basic_comparison_as_integer;
+  Array merged = array_merge(&one, &another, comparison);
+  ok(array_equals(&merged, &complete) == 1, "Must be equals.");
+}
+
 int main() {
-  plan(11 + 3);
+  plan(11 + 3 + 1);
 
   test_basics();
   test_splice();
+  test_merge();
 
   done_testing();
   return EXIT_SUCCESS;
