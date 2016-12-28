@@ -88,8 +88,8 @@ unsigned char array_equals(Array one, Array another) {
       equality = 1;
     } else {
       size_t index = 0;
-      void *one_key = array_get(one, index);
-      void *another_key = array_get(another, index);
+      void *one_key = array_get(one, index),
+           *another_key = array_get(another, index);
       while ((array_get(one, index) == array_get(another, index))
               && (index < array_lenght(one))) {
         index += 1;
@@ -130,36 +130,35 @@ Array array_slice(Array array, size_t begin, size_t end) {
  * Merge two given arrays based on a comparison function.
  */
 Array array_merge(Array one, Array another, ComparisonFunction comparison) {
-  Array merged_array = _array_create(
-    array_lenght(one) + array_lenght(another));
-  size_t i = 0;
-  size_t j = 0;
-  size_t k = 0;
+  Array merged = _array_create(array_lenght(one) + array_lenght(another));
+  size_t i = 0,
+         j = 0,
+         k = 0;
   while ((i < array_lenght(one)) && (j < array_lenght(another))) {
-    void *a = array_get(one, i);
-    void *b = array_get(another, j);
+    void *a = array_get(one, i),
+         *b = array_get(another, j);
     if (comparison(a, b) > 0) {
-      array_set(merged_array, k, b);
+      array_set(merged, k, b);
       j += 1;
     } else {
-      array_set(merged_array, k, a);
+      array_set(merged, k, a);
       i += 1;
     }
     k += 1;
   }
   while (i < array_lenght(one)) {
     void *a = array_get(one, i);
-    array_set(merged_array, k, a);
+    array_set(merged, k, a);
     k += 1;
     i += 1;
   }
   while (j < array_lenght(another)) {
     void *b = array_get(another, j);
-    array_set(merged_array, k, b);
+    array_set(merged, k, b);
     k += 1;
     j += 1;
   }
-  return merged_array;
+  return merged;
 }
 
 /**
@@ -170,14 +169,12 @@ void array_merge_into(
     ComparisonFunction comparison) {
   Array left = array_slice(array, begin, mid);
   Array right = array_slice(array, mid, end);
-  size_t left_lenght = array_lenght(left);
-  size_t right_lenght = array_lenght(right);
-  size_t i = 0;
-  size_t j = 0;
-  size_t k = begin;
-  while ((i < left_lenght) && (j < right_lenght)) {
-    void *left_value = array_get(left, i);
-    void *right_value = array_get(right, j);
+  size_t i = 0,
+         j = 0,
+         k = begin;
+  while ((i < array_lenght(left)) && (j < array_lenght(right))) {
+    void *left_value = array_get(left, i),
+         *right_value = array_get(right, j);
     if (comparison(right_value, left_value)) {
       array_set(array, k, left_value);
       i += 1;
@@ -187,13 +184,13 @@ void array_merge_into(
     }
     k += 1;
   }
-  while (i < left_lenght) {
+  while (i < array_lenght(left)) {
     void *value = array_get(left, i);
     array_set(array, k, value);
     k += 1;
     i += 1;
   }
-  while (j < right_lenght) {
+  while (j < array_lenght(right)) {
     void *value = array_get(right, j);
     array_set(array, k, value);
     k += 1;
