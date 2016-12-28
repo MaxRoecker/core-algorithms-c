@@ -28,6 +28,10 @@ Array array_slice(Array array, size_t begin, size_t end);
 
 Array array_merge(Array one, Array another, ComparisonFunction comparison);
 
+void array_merge_into(
+    Array array, size_t begin, size_t mid, size_t end,
+    ComparisonFunction comparison);
+
 Array array_copy(Array array);
 
 Array _array_create(size_t length);

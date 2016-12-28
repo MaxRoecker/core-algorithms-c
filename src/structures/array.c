@@ -163,6 +163,47 @@ Array array_merge(Array one, Array another, ComparisonFunction comparison) {
 }
 
 /**
+ * Merge two subarrays defined by begin, mid and end of an array.
+ */
+void array_merge_into(
+    Array array, size_t begin, size_t mid, size_t end,
+    ComparisonFunction comparison) {
+  Array left = array_slice(array, begin, mid);
+  Array right = array_slice(array, mid, end);
+  size_t left_lenght = array_lenght(left);
+  size_t right_lenght = array_lenght(right);
+  size_t i = 0;
+  size_t j = 0;
+  size_t k = begin;
+  while ((i < left_lenght) && (j < right_lenght)) {
+    void *left_value = array_get(left, i);
+    void *right_value = array_get(right, j);
+    if (comparison(right_value, left_value)) {
+      array_set(array, k, left_value);
+      i += 1;
+    } else {
+      array_set(array, k, right_value);
+      j += 1;
+    }
+    k += 1;
+  }
+  while (i < left_lenght) {
+    void *value = array_get(left, i);
+    array_set(array, k, value);
+    k += 1;
+    i += 1;
+  }
+  while (j < right_lenght) {
+    void *value = array_get(right, j);
+    array_set(array, k, value);
+    k += 1;
+    j += 1;
+  }
+  array_destroy(&left);
+  array_destroy(&right);
+}
+
+/**
  * Return a shallow copy of the array.
  *
  * A shallow copy do not copies the content it points to.

@@ -122,13 +122,45 @@ void test_merge() {
   array_destroy(&complete_merge);
 }
 
+void test_merge_into() {
+  // 4
+  void *a_elements[] = {&zero, &four, &two, &three, &one};
+  void *b_elements[] = {&zero, &two, &four, &three, &one};
+  void *c_elements[] = {&zero, &two, &four, &one, &three};
+  void *d_elements[] = {&zero, &one, &two, &three, &four};
+  Array a = array_create_from(a_elements, 5);
+  Array b = array_create_from(b_elements, 5);
+  Array c = array_create_from(c_elements, 5);
+  Array d = array_create_from(d_elements, 5);
+  ComparisonFunction comparison = &comparison_as_integer;
+
+  array_merge_into(a, 0, 2, 3, comparison);
+  ok(array_equals(a, b) == 1, "Must be equals.");
+
+  array_merge_into(a, 3, 4, 5, comparison);
+  ok(array_equals(a, c) == 1, "Must be equals.");
+
+  array_merge_into(a, 0, 3, 5, comparison);
+  ok(array_equals(a, d) == 1, "Must be equals.");
+
+  array_merge_into(a, 4, 4, 5, comparison);
+  ok(array_equals(a, d) == 1, "Must be equals.");
+
+  array_destroy(&a);
+  array_destroy(&b);
+  array_destroy(&c);
+  array_destroy(&d);
+}
+
+
 int main() {
-  plan(29 + 1 + 5 + 3);
+  plan(29 + 1 + 5 + 3 + 4);
 
   test_creation_destruction();
   test_copy();
   test_slice();
   test_merge();
+  test_merge_into();
 
   done_testing();
   return EXIT_SUCCESS;
