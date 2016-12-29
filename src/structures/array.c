@@ -103,10 +103,7 @@ unsigned char array_equals(Array one, Array another) {
 }
 
 /**
- * Returns a shallow copy of a subarray
- *
- * An array is equal to another only if all its elements are equals, i.e.
- * all the elements points to the same address.
+ * Returns a new subarray limited by the begin (inclusive) and end (exclusive).
  */
 Array array_slice(Array array, size_t begin, size_t end) {
   if (begin > end) {
@@ -202,9 +199,7 @@ void array_merge_into(
 }
 
 /**
- * Return a shallow copy of the array.
- *
- * A shallow copy do not copies the content it points to.
+ * Return a copy of the array. Do not copies the content the array points to.
  */
 Array array_copy(Array array) {
   Array copy = _array_create(array_lenght(array));
