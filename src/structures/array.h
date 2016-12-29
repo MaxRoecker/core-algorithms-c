@@ -2,6 +2,7 @@
 #define ARRAY_H
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdarg.h>
 #include "../commons/memory.h"
 #include "../commons/comparison.h"
 
@@ -25,6 +26,8 @@ void *array_set(Array array, size_t index, void *value);
 unsigned char array_equals(Array one, Array another);
 
 Array array_slice(Array array, size_t begin, size_t end);
+
+Array array_concat(Array arrays) ;
 
 Array array_merge(Array one, Array another, ComparisonFunction comparison);
 

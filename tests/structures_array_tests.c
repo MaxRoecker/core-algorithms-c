@@ -93,6 +93,34 @@ void test_slice() {
   array_destroy(&slice_complete);
 }
 
+void test_concat() {
+  // 1
+  void *a[] = {&zero, &one, &two, &three, &four};
+  void *b[] = {&zero, &one};
+  void *c[] = {&two};
+  void *d[] = {&three, &four};
+  void *e[] = {};
+  Array complete = array_create_from(a, 5);
+  Array prefix = array_create_from(b, 2);
+  Array infix = array_create_from(c, 1);
+  Array suffix = array_create_from(d, 2);
+  Array empty = array_create_from(e, 0);
+
+  void *arrays_elements[] = {&prefix, &infix, &suffix, &empty};
+  Array arrays = array_create_from(arrays_elements, 4);
+
+  Array concat = array_concat(arrays);
+  ok(array_equals(concat, complete) == 1, "Arrays must be equals.");
+
+  array_destroy(&complete);
+  array_destroy(&prefix);
+  array_destroy(&infix);
+  array_destroy(&suffix);
+  array_destroy(&empty);
+  array_destroy(&arrays);
+  array_destroy(&concat);
+}
+
 void test_merge() {
   // 3
   void *a[] = {&zero, &one, &two, &three, &four};
@@ -154,13 +182,14 @@ void test_merge_into() {
 
 
 int main() {
-  plan(29 + 1 + 5 + 3 + 4);
+  plan(29 + 1 + 5 + 3 + 4 + 1);
 
   test_creation_destruction();
   test_copy();
   test_slice();
   test_merge();
   test_merge_into();
+  test_concat();
 
   done_testing();
   return EXIT_SUCCESS;

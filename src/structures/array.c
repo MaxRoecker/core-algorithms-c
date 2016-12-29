@@ -125,6 +125,27 @@ Array array_slice(Array array, size_t begin, size_t end) {
   return slice;
 }
 
+/**
+ * Concatenates a Array of Arrays into a new one.
+ */
+Array array_concat(Array arrays) {
+  size_t total_lenght = 0;
+  for (size_t i = 0; i < array_lenght(arrays); i += 1) {
+    Array array = *((Array *) array_get(arrays, i));
+    total_lenght += array_lenght(array);
+  }
+  Array concat = _array_create(total_lenght);
+  size_t k = 0;
+  for (size_t i = 0; i < array_lenght(arrays); i += 1) {
+    Array array = *((Array *) array_get(arrays, i));
+    for (size_t j = 0; j < array_lenght(array); j += 1) {
+      void *value = array_get(array, j);
+      array_set(concat, k, value);
+      k += 1;
+    }
+  }
+  return concat;
+}
 
 /**
  * Merge two given arrays based on a comparison function.
