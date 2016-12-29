@@ -13,17 +13,30 @@ void *sorted_ints[] = {
         &nine, &eight, &seven, &six, &five, &four, &three, &two, &one, &zero},
      *unique_ints[] = {&zero};
 
-
 char compare_ascending(void *const one, void *const another) {
   int one_value = *((int *) one);
   int another_value = *((int *) another);
-  return one_value > another_value;
+  char comparison = 0;
+  if (one_value < another_value) {
+    comparison = -1;
+  }
+  if (one_value > another_value) {
+    comparison = 1;
+  }
+  return comparison;
 }
 
 char compare_descending(void *const one, void *const another) {
   int one_value = *((int *) one);
   int another_value = *((int *) another);
-  return one_value < another_value;
+  char comparison = 0;
+  if (one_value > another_value) {
+    comparison = -1;
+  }
+  if (one_value < another_value) {
+    comparison = 1;
+  }
+  return comparison;
 }
 
 

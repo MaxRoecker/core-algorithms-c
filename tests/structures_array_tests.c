@@ -8,11 +8,18 @@ int zero = 0,
     three = 3,
     four = 4;
 
-char comparison_as_integer(void *const one, void *const another) {
+char compare_ascending(void *const one, void *const another) {
   int one_value = *((int *) one);
   int another_value = *((int *) another);
-  return (char) one_value > another_value;
-};
+  char comparison = 0;
+  if (one_value < another_value) {
+    comparison = -1;
+  }
+  if (one_value > another_value) {
+    comparison = 1;
+  }
+  return comparison;
+}
 
 void test_creation_destruction() {
   // 29
@@ -130,7 +137,7 @@ void test_merge() {
   Array one = array_create_from(b, 3);
   Array another = array_create_from(c, 2);
   Array empty = array_create_empty(0);
-  ComparisonFunction comparison = &comparison_as_integer;
+  ComparisonFunction comparison = &compare_ascending;
 
   Array one_merge = array_merge(one, another, comparison);
   ok(array_equals(one_merge, complete) == 1, "Arrays must be equals.");
@@ -160,7 +167,7 @@ void test_merge_into() {
   Array b = array_create_from(b_elements, 5);
   Array c = array_create_from(c_elements, 5);
   Array d = array_create_from(d_elements, 5);
-  ComparisonFunction comparison = &comparison_as_integer;
+  ComparisonFunction comparison = &compare_ascending;
 
   array_merge_into(a, 0, 2, 3, comparison);
   ok(array_equals(a, b) == 1, "Must be equals.");

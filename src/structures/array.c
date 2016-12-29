@@ -173,7 +173,7 @@ void array_merge_into(
   while ((i < array_lenght(left)) && (j < array_lenght(right))) {
     void *left_value = array_get(left, i),
          *right_value = array_get(right, j);
-    if (comparison(right_value, left_value)) {
+    if (comparison(right_value, left_value) > 0) {
       array_set(array, k, left_value);
       i += 1;
     } else {

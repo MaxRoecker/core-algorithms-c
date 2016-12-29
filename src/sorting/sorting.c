@@ -5,7 +5,7 @@ Array insertion_sort(const Array array, ComparisonFunction comparison) {
   for (size_t i = 1; i < array_lenght(sorted); i += 1) {
     void *key = array_get(sorted, i);
     size_t j = i;
-    while ((j > 0) && (comparison(array_get(sorted, j - 1), key))) {
+    while ((j > 0) && (comparison(array_get(sorted, j - 1), key) > 0)) {
       array_set(sorted, j, array_get(sorted, j - 1));
       j -= 1;
     }
