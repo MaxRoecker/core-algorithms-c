@@ -13,7 +13,7 @@ Computer Science.
 ## Development ##
 Get the source, clone the repository:
 ```
-  git clone https://github.com/MaxRoecker/core-algorithms-c.git core-algorithms-js
+  git clone https://github.com/MaxRoecker/core-algorithms-c.git core-algorithms-c
 ```
 
 ### Dependencies ###
