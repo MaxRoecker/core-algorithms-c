@@ -15,21 +15,17 @@ Array insertion_sort(const Array array, ComparisonFunction comparison) {
 }
 
 Array merge_sort(Array array, ComparisonFunction comparison) {
-  Array sorted;
-  size_t length = array_lenght(array);
-  if (length > 1) {
-    size_t midpoint = length / 2;
-    Array left = array_slice(array, 0, midpoint);
-    Array right = array_slice(array, midpoint, length);
-    Array left_sorted = merge_sort(left, comparison);
-    array_destroy(&left);
-    Array right_sorted = merge_sort(right, comparison);
-    array_destroy(&right);
-    sorted = array_merge(left_sorted, right_sorted, comparison);
-    array_destroy(&left_sorted);
-    array_destroy(&right_sorted);
-  } else {
-    sorted = array_copy(array);
-  }
+  Array sorted = array_copy(array);
+  _merge_sort_into(sorted, 0, array_lenght(array), comparison);
   return sorted;
+}
+
+void _merge_sort_into(
+    Array array, size_t begin, size_t end, ComparisonFunction comparison) {
+  if ((end - begin) > 1) {
+    size_t mid = (begin + end) / 2;
+    _merge_sort_into(array, begin, mid, comparison);
+    _merge_sort_into(array, mid, end, comparison);
+    array_merge_into(array, begin, mid, end, comparison);
+  }
 }
