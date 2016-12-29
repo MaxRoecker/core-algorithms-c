@@ -151,34 +151,14 @@ Array array_concat(Array arrays) {
  * Merge two given arrays based on a comparison function.
  */
 Array array_merge(Array one, Array another, ComparisonFunction comparison) {
-  Array merged = _array_create(array_lenght(one) + array_lenght(another));
-  size_t i = 0,
-         j = 0,
-         k = 0;
-  while ((i < array_lenght(one)) && (j < array_lenght(another))) {
-    void *a = array_get(one, i),
-         *b = array_get(another, j);
-    if (comparison(a, b) > 0) {
-      array_set(merged, k, b);
-      j += 1;
-    } else {
-      array_set(merged, k, a);
-      i += 1;
-    }
-    k += 1;
-  }
-  while (i < array_lenght(one)) {
-    void *a = array_get(one, i);
-    array_set(merged, k, a);
-    k += 1;
-    i += 1;
-  }
-  while (j < array_lenght(another)) {
-    void *b = array_get(another, j);
-    array_set(merged, k, b);
-    k += 1;
-    j += 1;
-  }
+  void *arrays_elements[] = {&one, &another};
+  Array arrays = array_create_from(arrays_elements, 2);
+  Array merged = array_concat(arrays);
+  array_destroy(&arrays);
+  size_t begin = 0,
+         mid = array_lenght(one),
+         end = array_lenght(merged);
+  array_merge_into(merged, begin, mid, end, comparison);
   return merged;
 }
 
