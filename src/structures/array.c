@@ -1,17 +1,6 @@
 #include "array.h"
 
 /**
- * Create a array with the given lenght, allocating memory.
- */
-Array _array_create(size_t length) {
-  Array array = ((Array) memory_alloc(sizeof(ArrayStruct)));
-  void **elements = ((void *) memory_alloc(sizeof(void *) * length));
-  array->_elements = elements;
-  array->_length = length;
-  return array;
-}
-
-/**
  * Create a array of NULL with the given lenght.
  */
 Array array_create_empty(size_t length) {
@@ -208,4 +197,15 @@ Array array_copy(Array array) {
     array_set(copy, i, value);
   }
   return copy;
+}
+
+/**
+ * Create a array with the given lenght, allocating memory.
+ */
+Array _array_create(size_t length) {
+  Array array = ((Array) memory_alloc(sizeof(ArrayStruct)));
+  void **elements = ((void *) memory_alloc(sizeof(void *) * length));
+  array->_elements = elements;
+  array->_length = length;
+  return array;
 }
