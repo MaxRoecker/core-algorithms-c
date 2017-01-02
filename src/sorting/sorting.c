@@ -1,7 +1,7 @@
 #include "sorting.h"
 
 Array insertion_sort(const Array array, ComparisonFunction comparison) {
-  Array sorted = array_copy(array);
+  Array sorted = array_clone(array);
   for (size_t i = 1; i < array_lenght(sorted); i += 1) {
     void *key = array_get(sorted, i);
     size_t j = i;
@@ -15,13 +15,13 @@ Array insertion_sort(const Array array, ComparisonFunction comparison) {
 }
 
 Array merge_sort(Array array, ComparisonFunction comparison) {
-  Array sorted = array_copy(array);
+  Array sorted = array_clone(array);
   _merge_sort_into(sorted, 0, array_lenght(array), comparison);
   return sorted;
 }
 
 Array heap_sort(Array array, ComparisonFunction comparison) {
-  Array sorted = array_copy(array);
+  Array sorted = array_clone(array);
   if (array_lenght(sorted) > 1) {
     heap_build(sorted, comparison);
     for (size_t i = array_lenght(sorted) - 1; i > 0; i -= 1) {

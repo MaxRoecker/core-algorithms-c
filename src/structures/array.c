@@ -190,7 +190,7 @@ void array_merge_into(
 /**
  * Return a copy of the array. Do not copies the content the array points to.
  */
-Array array_copy(Array array) {
+Array array_clone(Array array) {
   Array copy = _array_create(array_lenght(array));
   for (size_t i = 0; i < array_lenght(array); i += 1) {
     void *value = array_get(array, i);

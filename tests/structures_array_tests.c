@@ -55,7 +55,7 @@ void test_copy() {
   // 1
   void *elements[] = {&zero, &one, &two, &three, &four};
   Array full = array_create_from(elements, 5);
-  Array empty = array_copy(full);
+  Array empty = array_clone(full);
 
   ok(array_equals(empty, full) == 1, "Copied arrays must be equals.");
 
