@@ -71,20 +71,14 @@ void *array_set(Array array, size_t index, void *value) {
  * all the elements points to the same address.
  */
 unsigned char array_equals(Array one, Array another) {
-  unsigned char equality = 0;
-  if (array_lenght(one) == array_lenght(another)) {
-    if (array_lenght(one) == 0) {
-      equality = 1;
-    } else {
+  unsigned char equality = (((void *) one) == ((void *) another));
+  if (!equality) {
+    equality = (array_lenght(one) == array_lenght(another));
+    if (equality) {
       size_t index = 0;
-      void *one_key = array_get(one, index),
-           *another_key = array_get(another, index);
-      while ((array_get(one, index) == array_get(another, index))
-              && (index < array_lenght(one))) {
+      while ((index < array_lenght(one)) && (equality)) {
+        equality = (array_get(one, index) == array_get(another, index));
         index += 1;
-      }
-      if (index >= array_lenght(one)) {
-        equality = 1;
       }
     }
   }
