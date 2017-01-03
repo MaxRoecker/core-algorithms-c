@@ -71,7 +71,7 @@ void *array_set(Array array, size_t index, void *value) {
  * all the elements points to the same address.
  */
 unsigned char array_equals(Array one, Array another) {
-  unsigned char equality = (((void *) one) == ((void *) another));
+  unsigned char equality = array_same(one, another);
   if (!equality) {
     equality = (array_lenght(one) == array_lenght(another));
     if (equality) {
@@ -83,6 +83,16 @@ unsigned char array_equals(Array one, Array another) {
     }
   }
   return equality;
+}
+
+/**
+ * Returns 1 if the two arrays are exactly the same.
+ *
+ * Two arrays are "the same" if they share the same memory address.
+ */
+unsigned char array_same(Array one, Array another) {
+  unsigned char sameness = (((void *) one) == ((void *) another));
+  return sameness;
 }
 
 /**

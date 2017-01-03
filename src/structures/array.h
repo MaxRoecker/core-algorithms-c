@@ -25,6 +25,8 @@ void *array_set(Array array, size_t index, void *value);
 
 unsigned char array_equals(Array one, Array another);
 
+unsigned char array_same(Array one, Array another);
+
 Array array_slice(Array array, size_t begin, size_t end);
 
 Array array_concat(Array arrays) ;
