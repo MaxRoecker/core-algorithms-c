@@ -1,6 +1,5 @@
 SHELL=/bin/sh
-CC=gcc
-CFLAGS= -std=c99
+CC=clang
 SRC=src
 BIN=bin
 
@@ -18,32 +17,32 @@ SORTING_MOD=$(SORTING_PACK)/sorting.h $(SORTING_PACK)/sorting.c $(HEAP_MOD)
 
 test-memory:
 	mkdir -p $(BIN)
-	$(CC) -o $(BIN)/memory_tests tests/commons_memory.c $(MEMORY_MOD) -ltap $(CFLAGS)
+	$(CC) -o $(BIN)/memory_tests -x c -ltap tests/commons_memory.c $(MEMORY_MOD)
 	./$(BIN)/memory_tests
 
 test-structure-array:
 	mkdir -p $(BIN)
-	$(CC) -o $(BIN)/array_tests tests/structures_array_tests.c $(ARRAY_MOD) -ltap $(CFLAGS)
+	$(CC) -o $(BIN)/array_tests -x c -ltap tests/structures_array_tests.c $(ARRAY_MOD)
 	./$(BIN)/array_tests
 
 test-structure-node:
 	mkdir -p $(BIN)
-	$(CC) -o $(BIN)/node_tests tests/structures_node_tests.c $(NODE_MOD) -ltap $(CFLAGS)
+	$(CC) -o $(BIN)/node_tests -x c -ltap tests/structures_node_tests.c $(NODE_MOD)
 	./$(BIN)/node_tests
 
 test-structure-list-array:
 	mkdir -p $(BIN)
-	$(CC) -o $(BIN)/list_array_tests tests/structures_list_array_tests.c $(LIST_ARRAY_MOD) -ltap $(CFLAGS)
+	$(CC) -o $(BIN)/list_array_tests -x c -ltap tests/structures_list_array_tests.c $(LIST_ARRAY_MOD)
 	./$(BIN)/list_array_tests
 
 test-structure-heap:
 	mkdir -p $(BIN)
-	$(CC) -o $(BIN)/heap_tests tests/structures_heap_tests.c $(HEAP_MOD) -ltap $(CFLAGS)
+	$(CC) -o $(BIN)/heap_tests -x c -ltap tests/structures_heap_tests.c $(HEAP_MOD)
 	./$(BIN)/heap_tests
 
 test-sorting:
 	mkdir -p $(BIN)
-	$(CC) -o $(BIN)/sorting_tests tests/sorting_tests.c $(SORTING_MOD) -ltap $(CFLAGS)
+	$(CC) -o $(BIN)/sorting_tests -x c -ltap tests/sorting_tests.c $(SORTING_MOD)
 	./$(BIN)/sorting_tests
 
 clean:
