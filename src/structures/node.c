@@ -39,7 +39,7 @@ Array node_children(Node node) {
  * Returns 1 if the node are equals, false otherwise.
  */
 unsigned char node_equals(Node one, Node another) {
-  unsigned char equality = ((void *) one) == ((void *) another);
+  unsigned char equality = node_same(one, another);
   if (!equality) {
     equality = (one->_value == another->_value);
     if (equality) {
@@ -47,6 +47,16 @@ unsigned char node_equals(Node one, Node another) {
     }
   }
   return equality;
+}
+
+/**
+ * Returns 1 if the two nodes are exactly the same.
+ *
+ * Two nodes are "the same" if they share the same memory address.
+ */
+unsigned char node_same(Node one, Node another) {
+  unsigned char sameness = ((void *) one) == ((void *) another);
+  return sameness;
 }
 
 /**

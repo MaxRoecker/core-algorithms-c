@@ -22,6 +22,8 @@ Array node_children(Node node);
 
 unsigned char node_equals(Node one, Node another);
 
+unsigned char node_same(Node one, Node another);
+
 void node_destroy(Node *node);
 
 Node node_clone(Node node);
