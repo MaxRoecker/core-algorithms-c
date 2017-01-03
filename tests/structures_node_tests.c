@@ -44,7 +44,7 @@ void test_creation_destruction() {
 }
 
 void test_clone() {
-  // 4
+  // 6
   Array second_children = array_create_empty(1);
   Node second = node_create(&two, second_children);
   array_destroy(&second_children);
@@ -54,11 +54,14 @@ void test_clone() {
   Node first = node_create(&one, first_children);
   array_destroy(&first_children);
 
+  Node other_first = first;
   Node first_clone = node_clone(first);
   Node second_clone = node_clone(second);
 
+  ok(node_same(first, other_first) == 1, "Same nodes must be the same.");
   ok(node_equals(first, first_clone) == 1, "Cloned nodes must be equals.");
   ok(node_equals(second, second_clone) == 1, "Cloned nodes must be equals.");
+  ok(node_same(second, second_clone) == 0, "Cloned nodes must not be the same.");
   ok(node_equals(first, second_clone) == 0, "Must not be equals.");
   ok(node_equals(second, first_clone) == 0, "Must not be equals.");
 
@@ -69,7 +72,7 @@ void test_clone() {
 }
 
 int main() {
-  plan(6 + 4);
+  plan(6 + 6);
 
   test_creation_destruction();
   test_clone();

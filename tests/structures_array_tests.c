@@ -52,12 +52,15 @@ void test_creation_destruction() {
 }
 
 void test_copy() {
-  // 1
+  // 3
   void *elements[] = {&zero, &one, &two, &three, &four};
   Array full = array_create_from(elements, 5);
+  Array other_full = full;
   Array empty = array_clone(full);
 
-  ok(array_equals(empty, full) == 1, "Copied arrays must be equals.");
+  ok(array_same(other_full, full) == 1, "Same arrays must be the same.");
+  ok(array_equals(empty, full) == 1, "Cloned arrays must be equals.");
+  ok(array_same(empty, full) == 0, "Cloned arrays must not be the same.");
 
   array_destroy(&full);
   array_destroy(&empty);
@@ -189,7 +192,7 @@ void test_merge_into() {
 
 
 int main() {
-  plan(29 + 1 + 5 + 3 + 4 + 1);
+  plan(29 + 3 + 5 + 3 + 4 + 1);
 
   test_creation_destruction();
   test_copy();
