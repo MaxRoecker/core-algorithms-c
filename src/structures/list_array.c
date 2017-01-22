@@ -181,10 +181,30 @@ void * listarray_remove_left(ListArray list, size_t index) {
   return removed_value;
 }
 
-// void listarray_enqueue(ListArray queue, void *value) {
-//   listarray_insert(queue, queue->_end, value);
-// }
-//
-// void listarray_push(ListArray stack, void *value) {
-//   listarray_insert(stack, stack->_end, value);
-// }
+/**
+ * Enqueue a value in the list.
+ */
+void listarray_enqueue(ListArray queue, void *value) {
+  listarray_insert(queue, 0, value);
+}
+
+/**
+ * Dequeue a value from the list.
+ */
+void * listarray_dequeue(ListArray queue) {
+  return listarray_remove(queue, listarray_lenght(queue) - 1);
+}
+
+/**
+ * Push a element into the stack.
+ */
+void listarray_push(ListArray stack, void *value) {
+  listarray_insert(stack, 0, value);
+}
+
+/**
+ * Pop a element from the stack.
+ */
+void * listarray_pop(ListArray stack) {
+  return listarray_remove(stack, 0);
+}
