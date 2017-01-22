@@ -29,8 +29,8 @@ ListArray listarray_create_with(size_t length) {
   Array array = array_create_empty(length + 1);
   ListArray list = ((ListArray) memory_alloc(sizeof(ListArrayStruct)));
   list->_array = array;
-  list->_begin = 0;
-  list->_end = 0;
+  list->_begin = length / 2;
+  list->_end = length / 2;
   return list;
 }
 
@@ -71,7 +71,7 @@ void * listarray_get(ListArray list, size_t index) {
     fprintf(stderr, "Index '%lu' out of bounds of the list.\n", index);
     exit(EXIT_FAILURE);
   }
-  size_t real_index = _listarray_array_index(list, index);
+  size_t real_index = (list->_begin + index) % array_lenght(list->_array);
   void *value = array_get(list->_array, real_index);
   return value;
 }
@@ -89,32 +89,55 @@ size_t listarray_index_of(ListArray list, void *value) {
   return i;
 }
 
-
-void * listarray_insert(ListArray list, size_t index, void *value) {
-  // TODO Check if the array is full.
-  size_t real_index = _listarray_array_index(list, index);
-  size_t i = list->_end;
-  while (i != real_index) {
-    void *list_value = array_get(list->_array, i - 1);
-    array_set(list->_array, i, list_value);
-    i = (i - 1) % array_lenght(list->_array);
+/**
+ * Inserts a value on a given index.
+ */
+void listarray_insert(ListArray list, size_t index, void *value) {
+  if (index > (listarray_lenght(list) / 2)) {
+    listarray_insert_right(list, index, value);
+  } else {
+    listarray_insert_left(list, index, value);
   }
-  array_set(list->_array, real_index, value);
-  list->_end = (list->_end + 1) % array_lenght(list->_array);
-}
-
-void * listarray_enqueue(ListArray queue, void *value) {
-  listarray_insert(queue, queue->_end, value);
-}
-
-void * listarray_push(ListArray stack, void *value) {
-  listarray_insert(stack, stack->_end, value);
 }
 
 /**
- * Returns the real index in the array.
+ * Inserts a value on a given index by right.
  */
-size_t _listarray_array_index(ListArray list, size_t index) {
+void listarray_insert_right(ListArray list, size_t index, void *value) {
+  list->_end = (list->_end + 1) % array_lenght(list->_array);
   size_t real_index = (list->_begin + index) % array_lenght(list->_array);
-  return real_index;
+  size_t i = list->_end;
+  while (i != real_index) {
+    size_t j = (i != 0)? (i - 1) : array_lenght(list->_array) - 1;
+    void *list_value = array_get(list->_array, j);
+    array_set(list->_array, i, list_value);
+    i = (i != 0)? (i - 1) : array_lenght(list->_array) - 1;
+  }
+  array_set(list->_array, real_index, value);
 }
+
+/**
+ * Inserts a value on a given index by left.
+ */
+void listarray_insert_left(ListArray list, size_t index, void *value) {
+  list->_begin = (list->_begin != 0)?
+    list->_begin - 1 : array_lenght(list->_array) - 1;
+  size_t real_index = (list->_begin + index) % array_lenght(list->_array);
+  size_t i = list->_begin;
+  while (i != real_index) {
+    size_t j = (i + 1) % array_lenght(list->_array);
+    void *list_value = array_get(list->_array, j);
+    array_set(list->_array, i, list_value);
+    i = (i + 1) % array_lenght(list->_array);
+  }
+  array_set(list->_array, real_index, value);
+}
+
+
+// void listarray_enqueue(ListArray queue, void *value) {
+//   listarray_insert(queue, queue->_end, value);
+// }
+//
+// void listarray_push(ListArray stack, void *value) {
+//   listarray_insert(stack, stack->_end, value);
+// }

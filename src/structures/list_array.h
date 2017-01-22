@@ -15,7 +15,6 @@ ListArray listarray_create_with(size_t length);
 
 void listarray_destroy(ListArray *list);
 
-
 size_t listarray_lenght(ListArray list);
 
 unsigned char listarray_empty(ListArray list);
@@ -26,11 +25,18 @@ void * listarray_get(ListArray list, size_t index);
 size_t listarray_index_of(ListArray list, void *value);
 
 
-void * listarray_insert(ListArray list, size_t index, void *value);
+void listarray_insert(ListArray list, size_t index, void *value);
 
-void * listarray_enqueue(ListArray queue, void *value);
+void listarray_insert_right(ListArray list, size_t index, void *value);
 
-void * listarray_push(ListArray stack, void *value);
+void listarray_insert_left(ListArray list, size_t index, void *value);
+
+
+// void * listarray_remove(ListArray list, size_t index);
+
+// void listarray_enqueue(ListArray queue, void *value);
+//
+// void listarray_push(ListArray stack, void *value);
 
 
 // void * listarray_remove(ListArray list, size_t index);
@@ -52,7 +58,6 @@ void * listarray_push(ListArray stack, void *value);
 // ListArray listarray_difference(ListArray one, ListArray another);
 //
 //
-size_t _listarray_array_index(ListArray list, size_t index);
 
 
 #endif
