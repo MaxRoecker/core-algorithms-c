@@ -133,6 +133,53 @@ void listarray_insert_left(ListArray list, size_t index, void *value) {
   array_set(list->_array, real_index, value);
 }
 
+/**
+ * Remove a item of a list at the given index.
+ */
+void * listarray_remove(ListArray list, size_t index) {
+  void *removed_value;
+  if (index > (listarray_lenght(list) / 2)) {
+    removed_value = listarray_remove_right(list, index);
+  } else {
+    removed_value = listarray_remove_left(list, index);
+  }
+  return removed_value;
+}
+
+/**
+ * Remove a item of a list at the given index from the right.
+ */
+void * listarray_remove_right(ListArray list, size_t index) {
+  size_t real_index = (list->_begin + index) % array_lenght(list->_array);
+  void *removed_value = array_get(list->_array, real_index);
+  size_t i = real_index;
+  while (i != list->_end) {
+    size_t j = (i + 1) % array_lenght(list->_array);
+    void *list_value = array_get(list->_array, j);
+    array_set(list->_array, i, list_value);
+    i = (i + 1) % array_lenght(list->_array);
+  }
+  list->_end = (list->_end != 0)?
+    list->_end - 1 : array_lenght(list->_array) - 1;
+  return removed_value;
+}
+
+/**
+ * Remove a item of a list at the given index from the left.
+ */
+void * listarray_remove_left(ListArray list, size_t index) {
+  size_t real_index = (list->_begin + index) % array_lenght(list->_array);
+  void *removed_value = array_get(list->_array, real_index);
+  size_t i = real_index;
+  while (i != list->_begin) {
+    size_t j = (i != 0)? (i - 1) : array_lenght(list->_array) - 1;
+    void *list_value = array_get(list->_array, j);
+    array_set(list->_array, i, list_value);
+    i = (i != 0)? (i - 1) : array_lenght(list->_array) - 1;
+  }
+  list->_begin = (list->_begin + 1) % array_lenght(list->_array);
+  return removed_value;
+}
 
 // void listarray_enqueue(ListArray queue, void *value) {
 //   listarray_insert(queue, queue->_end, value);

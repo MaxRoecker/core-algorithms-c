@@ -32,7 +32,12 @@ void listarray_insert_right(ListArray list, size_t index, void *value);
 void listarray_insert_left(ListArray list, size_t index, void *value);
 
 
-// void * listarray_remove(ListArray list, size_t index);
+void * listarray_remove(ListArray list, size_t index);
+
+void * listarray_remove_right(ListArray list, size_t index);
+
+void * listarray_remove_left(ListArray list, size_t index);
+
 
 // void listarray_enqueue(ListArray queue, void *value);
 //

@@ -72,13 +72,28 @@ void test_insert() {
   ok((listarray_get(list, 4) == &four) == 1, "Must be equals.");
 }
 
+void test_remove() {
+  // 6
+  void *ints[] = {&zero, &one, &two, &three, &four};
+  Array full = array_create_from(ints, 5);
+  ListArray list = listarray_create_of(full);
+  array_destroy(&full);
+
+  ok((listarray_remove(list, 1) == &one) == 1, "Must be equals.");
+  ok((listarray_remove(list, 2) == &three) == 1, "Must be equals.");
+  ok((listarray_remove(list, 2) == &four) == 1, "Must be equals.");
+  ok((listarray_remove(list, 0) == &zero) == 1, "Must be equals.");
+  ok((listarray_remove(list, 0) == &two) == 1, "Must be equals.");
+  ok((listarray_lenght(list) == 0) == 1, "Must be empty.");
+}
 
 int main() {
-  plan(8 + 10 + 6);
+  plan(8 + 10 + 6 + 6);
 
   test_creation_destruction();
   test_get();
   test_insert();
+  test_remove();
 
   done_testing();
   return EXIT_SUCCESS;
