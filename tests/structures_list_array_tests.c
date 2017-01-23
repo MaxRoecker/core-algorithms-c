@@ -100,6 +100,25 @@ void test_insert() {
   listarray_destroy(&list);
 }
 
+void test_insert_resized() {
+  // 6
+  ListArray list = listarray_create_with(2);
+  listarray_insert(list, 0, &two);
+  listarray_insert(list, 1, &four);
+  listarray_insert(list, 0, &zero);
+  listarray_insert(list, 1, &one);
+  listarray_insert(list, 3, &three);
+
+  ok(listarray_lenght(list) == 5, "Must be lenght of %d.", 5);
+  ok((listarray_get(list, 0) == &zero) == 1, "Must be equals.");
+  ok((listarray_get(list, 1) == &one) == 1, "Must be equals.");
+  ok((listarray_get(list, 2) == &two) == 1, "Must be equals.");
+  ok((listarray_get(list, 3) == &three) == 1, "Must be equals.");
+  ok((listarray_get(list, 4) == &four) == 1, "Must be equals.");
+
+  listarray_destroy(&list);
+}
+
 void test_remove() {
   // 6
   void *ints[] = {&zero, &one, &two, &three, &four};
@@ -141,11 +160,12 @@ void test_max_min() {
 }
 
 int main() {
-  plan(12 + 10 + 6 + 6 + 4);
+  plan(12 + 10 + 6 + 6 + 6 + 4);
 
   test_creation_destruction();
   test_get();
   test_insert();
+  test_insert_resized();
   test_remove();
   test_max_min();
 

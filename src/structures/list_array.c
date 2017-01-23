@@ -101,6 +101,9 @@ size_t listarray_index_of(ListArray list, void *value) {
  * Inserts a value on a given index.
  */
 void listarray_insert(ListArray list, size_t index, void *value) {
+  if (_listarray_full(list)) {
+    _listarray_resize(list, 1.5);
+  }
   if (index > (listarray_lenght(list) / 2)) {
     listarray_insert_right(list, index, value);
   } else {
@@ -219,4 +222,31 @@ size_t listarray_min(ListArray list, ComparisonFunction comparison) {
     }
   }
   return min;
+}
+
+/**
+ * Returns 1 if the list's array is full, 0 otherwise.
+ */
+unsigned char _listarray_full(ListArray list) {
+  return ((list->_end + 1) % array_lenght(list->_array)) == list->_begin;
+}
+
+/**
+ * Resize the given list based on a factor.
+ */
+void _listarray_resize(ListArray list, double factor) {
+  Array current_array = list->_array;
+  size_t current_lenght = array_lenght(current_array);
+  size_t resized_lenght = ((size_t) ((int) ceil(factor * current_lenght)));
+  Array resized_array = array_create_empty(resized_lenght);
+  size_t resized_begin = (current_lenght / 2);
+  size_t resized_end = resized_begin + listarray_lenght(list);
+  for (size_t i = 0; i < listarray_lenght(list); i += 1) {
+    void *value = listarray_get(list, i);
+    array_set(resized_array, resized_begin + i, value);
+  }
+  list->_array = resized_array;
+  list->_begin = resized_begin;
+  list->_end = resized_end;
+  array_destroy(&current_array);
 }

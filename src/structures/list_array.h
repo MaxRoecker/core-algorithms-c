@@ -1,5 +1,6 @@
 #ifndef LIST_ARRAY_H
 #define LIST_ARRAY_H
+#include <math.h>
 #include "array.h"
 
 typedef struct {Array _array; size_t _begin; size_t _end;} ListArrayStruct;
@@ -44,6 +45,11 @@ void * listarray_remove_left(ListArray list, size_t index);
 size_t listarray_max(ListArray list, ComparisonFunction comparison);
 
 size_t listarray_min(ListArray list, ComparisonFunction comparison);
+
+
+unsigned char _listarray_full(ListArray list);
+
+void _listarray_resize(ListArray list, double factor);
 
 
 // ListArray listarray_concat(ListArray one, ListArray another);
