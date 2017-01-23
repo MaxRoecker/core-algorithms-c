@@ -2,6 +2,7 @@
 
 /**
  * Creates an empty ListArray with standard size.
+ * Time complexity: O(1)
  */
 ListArray listarray_create() {
   ListArray list = listarray_create_with(15);
@@ -10,6 +11,7 @@ ListArray listarray_create() {
 
 /**
  * Creates a ListArray with the elements and size of the given array.
+ * Time complexity: O(n)
  */
 ListArray listarray_create_of(Array initial_state) {
   ListArray list = listarray_create_with(array_lenght(initial_state));
@@ -24,6 +26,7 @@ ListArray listarray_create_of(Array initial_state) {
 
 /**
  * Creates an empty ListArray with the given size.
+ * Time complexity: O(n)
  */
 ListArray listarray_create_with(size_t length) {
   Array array = array_create_empty(length + 1);
@@ -36,6 +39,7 @@ ListArray listarray_create_with(size_t length) {
 
 /**
  * Destroys the ListArray, freeing memory.
+ * Time complexity: O(1)
  */
 void listarray_destroy(ListArray *list) {
   array_destroy(&((*list)->_array));
@@ -45,6 +49,7 @@ void listarray_destroy(ListArray *list) {
 
 /**
  * Returns the length of the given list.
+ * Time complexity: O(1)
  */
 size_t listarray_lenght(ListArray list) {
   size_t length = 0;
@@ -58,6 +63,7 @@ size_t listarray_lenght(ListArray list) {
 
 /**
  * Returns 1 if there is no element in list; 0 otherwise.
+ * Time complexity: O(1)
  */
 unsigned char listarray_empty(ListArray list) {
   return (list->_begin == list->_end);
@@ -65,6 +71,7 @@ unsigned char listarray_empty(ListArray list) {
 
 /**
  * Returns an array representation of the list.
+ * Time complexity: O(n)
  */
 Array listarray_as_array(ListArray list) {
   Array array = array_slice(list->_array, list->_begin, list->_end);
@@ -73,6 +80,7 @@ Array listarray_as_array(ListArray list) {
 
 /**
  * Returns the value of the given index.
+ * Time complexity: O(1)
  */
 void * listarray_get(ListArray list, size_t index) {
   if (index >= listarray_lenght(list)) {
@@ -86,6 +94,7 @@ void * listarray_get(ListArray list, size_t index) {
 
 /**
  * Returns the index of the value given or the lenght of list if not found.
+ * Time complexity: O(n)
  *
  * Two values are the same if they share the same memory address.
  */
@@ -99,6 +108,10 @@ size_t listarray_index_of(ListArray list, void *value) {
 
 /**
  * Inserts a value on a given index.
+ * Time complexity:
+ *  - Best case: O(1);
+ *  - Average case: O(n);
+ *  - Worst case: O(n).
  */
 void listarray_insert(ListArray list, size_t index, void *value) {
   if (_listarray_full(list)) {
@@ -113,6 +126,10 @@ void listarray_insert(ListArray list, size_t index, void *value) {
 
 /**
  * Inserts a value on a given index by right.
+ * Time complexity:
+ *  - Best case: O(1);
+ *  - Average case: O(n);
+ *  - Worst case: O(n).
  */
 void listarray_insert_right(ListArray list, size_t index, void *value) {
   list->_end = (list->_end + 1) % array_lenght(list->_array);
@@ -129,6 +146,10 @@ void listarray_insert_right(ListArray list, size_t index, void *value) {
 
 /**
  * Inserts a value on a given index by left.
+ * Time complexity:
+ *  - Best case: O(1);
+ *  - Average case: O(n);
+ *  - Worst case: O(n).
  */
 void listarray_insert_left(ListArray list, size_t index, void *value) {
   list->_begin = (list->_begin != 0)?
@@ -146,6 +167,10 @@ void listarray_insert_left(ListArray list, size_t index, void *value) {
 
 /**
  * Remove a item of a list at the given index.
+ * Time complexity:
+ *  - Best case: O(1);
+ *  - Average case: O(n);
+ *  - Worst case: O(n).
  */
 void * listarray_remove(ListArray list, size_t index) {
   void *removed_value;
@@ -159,6 +184,10 @@ void * listarray_remove(ListArray list, size_t index) {
 
 /**
  * Remove a item of a list at the given index from the right.
+ * Time complexity:
+ *  - Best case: O(1);
+ *  - Average case: O(n);
+ *  - Worst case: O(n).
  */
 void * listarray_remove_right(ListArray list, size_t index) {
   size_t real_index = (list->_begin + index) % array_lenght(list->_array);
@@ -177,6 +206,10 @@ void * listarray_remove_right(ListArray list, size_t index) {
 
 /**
  * Remove a item of a list at the given index from the left.
+ * Time complexity:
+ *  - Best case: O(1);
+ *  - Average case: O(n);
+ *  - Worst case: O(n).
  */
 void * listarray_remove_left(ListArray list, size_t index) {
   size_t real_index = (list->_begin + index) % array_lenght(list->_array);
@@ -194,6 +227,7 @@ void * listarray_remove_left(ListArray list, size_t index) {
 
 /**
  * Returns the index of the maximum element based on given comparison.
+ * Time complexity: O(n)
  */
 size_t listarray_max(ListArray list, ComparisonFunction comparison) {
   size_t max = 0;
@@ -210,6 +244,7 @@ size_t listarray_max(ListArray list, ComparisonFunction comparison) {
 
 /**
  * Returns the index of the minimum element based on given comparison.
+ * Time complexity: O(n)
  */
 size_t listarray_min(ListArray list, ComparisonFunction comparison) {
   size_t min = 0;
@@ -226,6 +261,7 @@ size_t listarray_min(ListArray list, ComparisonFunction comparison) {
 
 /**
  * Returns 1 if the list's array is full, 0 otherwise.
+ * Time complexity: O(1)
  */
 unsigned char _listarray_full(ListArray list) {
   return ((list->_end + 1) % array_lenght(list->_array)) == list->_begin;
@@ -233,6 +269,7 @@ unsigned char _listarray_full(ListArray list) {
 
 /**
  * Resize the given list based on a factor.
+ * Time complexity: O(n)
  */
 void _listarray_resize(ListArray list, double factor) {
   Array current_array = list->_array;

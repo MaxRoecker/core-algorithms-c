@@ -2,6 +2,7 @@
 
 /**
  * Create a array of NULL with the given lenght.
+ * Time complexity: O(n)
  */
 Array array_create_empty(size_t length) {
   Array array = _array_create(length);
@@ -13,6 +14,7 @@ Array array_create_empty(size_t length) {
 
 /**
  * Create a array of the given elements with the given lenght.
+ * Time complexity: O(n)
  */
 Array array_create_from(void **elements, size_t length) {
   Array array = _array_create(length);
@@ -24,6 +26,7 @@ Array array_create_from(void **elements, size_t length) {
 
 /**
  * Destroys the array, but not the content it points to; freeing memory.
+ * Time complexity: O(1)
  */
 void array_destroy(Array *array) {
   free((*array)->_elements);
@@ -33,6 +36,7 @@ void array_destroy(Array *array) {
 
 /**
  * Returns the length of the given array.
+ * Time complexity: O(1)
  */
 size_t array_lenght(Array array) {
   return array->_length;
@@ -40,6 +44,7 @@ size_t array_lenght(Array array) {
 
 /**
  * Returns a pointer to indexed element.
+ * Time complexity: O(1)
  */
 void *array_get(Array array, size_t index) {
   if (index > array->_length) {
@@ -52,6 +57,7 @@ void *array_get(Array array, size_t index) {
 
 /**
  * Put a pointer to an indexed element.
+ * Time complexity: O(1)
  */
 void *array_set(Array array, size_t index, void *value) {
   if (index > array->_length) {
@@ -66,6 +72,7 @@ void *array_set(Array array, size_t index, void *value) {
 
 /**
  * Returns 1 if the array is equal to another. 0 otherwise.
+ * Time complexity: O(n)
  *
  * An array is equal to another only if all its elements are equals, i.e.
  * all the elements points to the same address.
@@ -87,6 +94,7 @@ unsigned char array_equals(Array one, Array another) {
 
 /**
  * Returns 1 if the two arrays are exactly the same.
+ * Time complexity: O(1)
  *
  * Two arrays are "the same" if they share the same memory address.
  */
@@ -97,6 +105,7 @@ unsigned char array_same(Array one, Array another) {
 
 /**
  * Returns a new subarray limited by the begin (inclusive) and end (exclusive).
+ * Time complexity: O(n)
  */
 Array array_slice(Array array, size_t begin, size_t end) {
   if (begin > end) {
@@ -117,6 +126,7 @@ Array array_slice(Array array, size_t begin, size_t end) {
 
 /**
  * Concatenates a Array of Arrays into a new one.
+ * Time complexity: O(n)
  */
 Array array_concat(Array arrays) {
   size_t total_lenght = 0;
@@ -139,6 +149,7 @@ Array array_concat(Array arrays) {
 
 /**
  * Merge two given arrays based on a comparison function.
+ * Time complexity: O(n)
  */
 Array array_merge(Array one, Array another, ComparisonFunction comparison) {
   void *arrays_elements[] = {&one, &another};
@@ -154,6 +165,7 @@ Array array_merge(Array one, Array another, ComparisonFunction comparison) {
 
 /**
  * Merge two subarrays defined by begin, mid and end of an array.
+ * Time complexity: O(n)
  */
 void array_merge_into(
     Array array, size_t begin, size_t mid, size_t end,
@@ -191,6 +203,10 @@ void array_merge_into(
   array_destroy(&right);
 }
 
+/**
+ * Copies the source array to the target array between from and until.
+ * Time complexity: O(n)
+ */
 void array_copy(
     Array source, Array target, size_t from, size_t until, size_t at) {
   size_t lenght = until - from;
@@ -202,6 +218,7 @@ void array_copy(
 
 /**
  * Return a copy of the array. Do not copies the content the array points to.
+ * Time complexity: O(n)
  */
 Array array_clone(Array array) {
   Array copy = _array_create(array_lenght(array));
@@ -214,6 +231,7 @@ Array array_clone(Array array) {
 
 /**
  * Create a array with the given lenght, allocating memory.
+ * Time complexity: O(1)
  */
 Array _array_create(size_t length) {
   Array array = ((Array) memory_alloc(sizeof(ArrayStruct)));
