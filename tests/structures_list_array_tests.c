@@ -58,6 +58,8 @@ void test_creation_destruction() {
   ok(array_equals(full, d_array) == 1, "Must be equals.");
   array_destroy(&d_array);
   listarray_destroy(&d);
+
+  array_destroy(&empty);
 }
 
 void test_get() {
@@ -71,11 +73,12 @@ void test_get() {
     unsigned char equality = (ints[i] == listarray_get(list, i));
     ok(equality == 1, "Must be equals.");
   }
-
   for (size_t i = 0; i < 5; i += 1) {
     size_t index = listarray_index_of(list, ints[i]);
     ok(index == i, "Must be equals.");
   }
+
+  listarray_destroy(&list);
 }
 
 void test_insert() {
@@ -93,6 +96,8 @@ void test_insert() {
   ok((listarray_get(list, 2) == &two) == 1, "Must be equals.");
   ok((listarray_get(list, 3) == &three) == 1, "Must be equals.");
   ok((listarray_get(list, 4) == &four) == 1, "Must be equals.");
+
+  listarray_destroy(&list);
 }
 
 void test_remove() {
@@ -108,6 +113,8 @@ void test_remove() {
   ok((listarray_remove(list, 0) == &zero) == 1, "Must be equals.");
   ok((listarray_remove(list, 0) == &two) == 1, "Must be equals.");
   ok((listarray_lenght(list) == 0) == 1, "Must be empty.");
+
+  listarray_destroy(&list);
 }
 
 void test_queue() {
@@ -124,6 +131,8 @@ void test_queue() {
   ok((listarray_dequeue(queue) == &one) == 1, "Must be equals.");
   ok((listarray_dequeue(queue) == &two) == 1, "Must be equals.");
   ok((listarray_dequeue(queue) == &three) == 1, "Must be equals.");
+
+  listarray_destroy(&queue);
 }
 
 void test_stack() {
@@ -140,6 +149,8 @@ void test_stack() {
   ok((listarray_pop(stack) == &three) == 1, "Must be equals.");
   ok((listarray_pop(stack) == &two) == 1, "Must be equals.");
   ok((listarray_pop(stack) == &one) == 1, "Must be equals.");
+
+  listarray_destroy(&stack);
 }
 
 void test_max_min() {
@@ -160,6 +171,9 @@ void test_max_min() {
   ok((listarray_max(uniq, comparison) == 0) == 1, "Must be equals.");
   ok((listarray_min(full, comparison) == 0) == 1, "Must be equals.");
   ok((listarray_min(uniq, comparison) == 0) == 1, "Must be equals.");
+
+  listarray_destroy(&full);
+  listarray_destroy(&uniq);
 }
 
 int main() {
