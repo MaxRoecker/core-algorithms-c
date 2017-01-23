@@ -19,6 +19,8 @@ size_t listarray_lenght(ListArray list);
 
 unsigned char listarray_empty(ListArray list);
 
+Array listarray_as_array(ListArray list);
+
 
 void * listarray_get(ListArray list, size_t index);
 

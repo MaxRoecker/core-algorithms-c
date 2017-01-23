@@ -64,6 +64,14 @@ unsigned char listarray_empty(ListArray list) {
 }
 
 /**
+ * Returns an array representation of the list.
+ */
+Array listarray_as_array(ListArray list) {
+  Array array = array_slice(list->_array, list->_begin, list->_end);
+  return array;
+}
+
+/**
  * Returns the value of the given index.
  */
 void * listarray_get(ListArray list, size_t index) {

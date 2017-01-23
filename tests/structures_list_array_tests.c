@@ -22,31 +22,41 @@ char compare_ascending(void *const one, void *const another) {
 }
 
 void test_creation_destruction() {
-  // 8
+  // 12
+  Array empty = array_create_empty(0);
+
   ListArray a = listarray_create();
+  Array a_array = listarray_as_array(a);
   ok(listarray_lenght(a) == 0, "Must have lenght of %d.", 0);
   ok(listarray_empty(a) == 1, "Must be empty.");
+  ok(array_equals(empty, a_array) == 1, "Must be equals.");
+  array_destroy(&a_array);
+  listarray_destroy(&a);
 
-  Array empty = array_create_empty(0);
   ListArray b = listarray_create_of(empty);
-  array_destroy(&empty);
+  Array b_array = listarray_as_array(b);
   ok(listarray_lenght(b) == 0, "Must have length of %d.", 0);
   ok(listarray_empty(b) == 1, "Must be empty.");
+  ok(array_equals(empty, b_array) == 1, "Must be equals.");
+  array_destroy(&b_array);
+  listarray_destroy(&b);
 
   ListArray c = listarray_create_with(7);
+  Array c_array = listarray_as_array(c);
   ok(listarray_lenght(c) == 0, "Must have lenght of %d.", 0);
   ok(listarray_empty(c) == 1, "Must be empty.");
+  ok(array_equals(empty, c_array) == 1, "Must be equals.");
+  array_destroy(&c_array);
+  listarray_destroy(&c);
 
   void *elements[] = {&zero, &one, &two, &three, &four};
   Array full = array_create_from(elements, 5);
   ListArray d = listarray_create_of(full);
-  array_destroy(&full);
+  Array d_array = listarray_as_array(d);
   ok(listarray_lenght(d) == 5, "Must have length of %d.", 5);
   ok(listarray_empty(d) == 0, "Must not be empty.");
-
-  listarray_destroy(&a);
-  listarray_destroy(&b);
-  listarray_destroy(&c);
+  ok(array_equals(full, d_array) == 1, "Must be equals.");
+  array_destroy(&d_array);
   listarray_destroy(&d);
 }
 
@@ -153,7 +163,7 @@ void test_max_min() {
 }
 
 int main() {
-  plan(8 + 10 + 6 + 6 + 4 + 4 + 4);
+  plan(12 + 10 + 6 + 6 + 4 + 4 + 4);
 
   test_creation_destruction();
   test_get();
