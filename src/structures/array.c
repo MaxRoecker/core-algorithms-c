@@ -191,6 +191,15 @@ void array_merge_into(
   array_destroy(&right);
 }
 
+void array_copy(
+    Array source, Array target, size_t from, size_t until, size_t at) {
+  size_t lenght = until - from;
+  for (size_t i = 0; i < lenght; i += 1) {
+    void *value = array_get(source, from + i);
+    array_set(target, at + i, value);
+  }
+}
+
 /**
  * Return a copy of the array. Do not copies the content the array points to.
  */

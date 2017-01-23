@@ -29,13 +29,16 @@ unsigned char array_same(Array one, Array another);
 
 Array array_slice(Array array, size_t begin, size_t end);
 
-Array array_concat(Array arrays) ;
+Array array_concat(Array arrays);
 
 Array array_merge(Array one, Array another, ComparisonFunction comparison);
 
 void array_merge_into(
     Array array, size_t begin, size_t mid, size_t end,
     ComparisonFunction comparison);
+
+void array_copy(
+    Array source, Array target, size_t from, size_t until, size_t at);
 
 Array array_clone(Array array);
 

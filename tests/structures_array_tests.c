@@ -34,8 +34,8 @@ void test_creation_destruction() {
   ok(array_equals(a, b) == 1, "Must be true.");
 
   for (size_t i = 0; i < size; i += 1) {
-    ok(array_get(a, i) == NULL, "Item %lu of a must be NULL.", i);
-    ok(array_get(a, i) == NULL, "Item %lu of b must be NULL.", i);
+    ok((array_get(a, i) == NULL) == 1, "Item %lu of a must be NULL.", i);
+    ok((array_get(a, i) == NULL) == 1, "Item %lu of b must be NULL.", i);
   }
 
   ok(array_equals(c, d) == 1, "Empty arrays must be equals.");
@@ -45,13 +45,13 @@ void test_creation_destruction() {
   array_destroy(&b);
   array_destroy(&c);
   array_destroy(&d);
-  ok(a == NULL, "Must be NULL.");
-  ok(b == NULL, "Must be NULL.");
-  ok(c == NULL, "Must be NULL.");
-  ok(d == NULL, "Must be NULL.");
+  ok((a == NULL) == 1, "Must be NULL.");
+  ok((b == NULL) == 1, "Must be NULL.");
+  ok((c == NULL) == 1, "Must be NULL.");
+  ok((d == NULL) == 1, "Must be NULL.");
 }
 
-void test_copy() {
+void test_clone() {
   // 3
   void *elements[] = {&zero, &one, &two, &three, &four};
   Array full = array_create_from(elements, 5);
@@ -190,16 +190,36 @@ void test_merge_into() {
   array_destroy(&d);
 }
 
+void test_array_copy() {
+  // 2
+  void *a[] = {&zero, &one, &two, &three, &four};
+  void *b[] = {NULL, &one, &two, &three, NULL};
+  Array complete = array_create_from(a, 5);
+  Array semi = array_create_from(b, 5);
+  Array empty = array_create_empty(5);
+
+  array_copy(complete, empty, 1, 4, 1);
+  ok(array_equals(empty, semi) == 1, "Must be equals.");
+
+  array_copy(complete, empty, 0, 5, 0);
+  ok(array_equals(empty, complete) == 1, "Must be equals.");
+
+  array_destroy(&complete);
+  array_destroy(&semi);
+  array_destroy(&empty);
+}
+
 
 int main() {
-  plan(29 + 3 + 5 + 3 + 4 + 1);
+  plan(29 + 3 + 5 + 3 + 4 + 1 + 2);
 
   test_creation_destruction();
-  test_copy();
+  test_clone();
   test_slice();
   test_merge();
   test_merge_into();
   test_concat();
+  test_array_copy();
 
   done_testing();
   return EXIT_SUCCESS;
