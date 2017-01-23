@@ -41,16 +41,6 @@ void * listarray_remove_right(ListArray list, size_t index);
 void * listarray_remove_left(ListArray list, size_t index);
 
 
-void listarray_enqueue(ListArray queue, void *value);
-
-void * listarray_dequeue(ListArray queue);
-
-
-void listarray_push(ListArray stack, void *value);
-
-void * listarray_pop(ListArray stack);
-
-
 size_t listarray_max(ListArray list, ComparisonFunction comparison);
 
 size_t listarray_min(ListArray list, ComparisonFunction comparison);

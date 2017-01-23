@@ -117,42 +117,6 @@ void test_remove() {
   listarray_destroy(&list);
 }
 
-void test_queue() {
-  // 4
-  ListArray queue = listarray_create();
-
-  listarray_enqueue(queue, &zero);
-  ok((listarray_dequeue(queue) == &zero) == 1, "Must be the same.");
-
-  listarray_enqueue(queue, &one);
-  listarray_enqueue(queue, &two);
-  listarray_enqueue(queue, &three);
-
-  ok((listarray_dequeue(queue) == &one) == 1, "Must be equals.");
-  ok((listarray_dequeue(queue) == &two) == 1, "Must be equals.");
-  ok((listarray_dequeue(queue) == &three) == 1, "Must be equals.");
-
-  listarray_destroy(&queue);
-}
-
-void test_stack() {
-  // 4
-  ListArray stack = listarray_create();
-
-  listarray_push(stack, &zero);
-  ok((listarray_pop(stack) == &zero) == 1, "Must be the same.");
-
-  listarray_push(stack, &one);
-  listarray_push(stack, &two);
-  listarray_push(stack, &three);
-
-  ok((listarray_pop(stack) == &three) == 1, "Must be equals.");
-  ok((listarray_pop(stack) == &two) == 1, "Must be equals.");
-  ok((listarray_pop(stack) == &one) == 1, "Must be equals.");
-
-  listarray_destroy(&stack);
-}
-
 void test_max_min() {
   // 4
   void *full_ints[] = {&zero, &one, &two, &three, &four};
@@ -177,14 +141,12 @@ void test_max_min() {
 }
 
 int main() {
-  plan(12 + 10 + 6 + 6 + 4 + 4 + 4);
+  plan(12 + 10 + 6 + 6 + 4);
 
   test_creation_destruction();
   test_get();
   test_insert();
   test_remove();
-  test_queue();
-  test_stack();
   test_max_min();
 
   done_testing();
