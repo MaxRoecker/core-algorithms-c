@@ -9,7 +9,7 @@ typedef ListArrayStruct * ListArray;
 
 ListArray listarray_create();
 
-ListArray listarray_create_of(Array array);
+ListArray listarray_create_of(Array initial_state);
 
 ListArray listarray_create_with(size_t length);
 

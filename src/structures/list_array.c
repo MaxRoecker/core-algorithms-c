@@ -11,14 +11,14 @@ ListArray listarray_create() {
 /**
  * Creates a ListArray with the elements and size of the given array.
  */
-ListArray listarray_create_of(Array array) {
-  ListArray list = listarray_create_with(array_lenght(array));
-  for (size_t i = 0; i < array_lenght(array); i += 1) {
-    void *value = array_get(array, i);
+ListArray listarray_create_of(Array initial_state) {
+  ListArray list = listarray_create_with(array_lenght(initial_state));
+  for (size_t i = 0; i < array_lenght(initial_state); i += 1) {
+    void *value = array_get(initial_state, i);
     array_set(list->_array, i, value);
   }
   list->_begin = 0;
-  list->_end = array_lenght(array);
+  list->_end = array_lenght(initial_state);
   return list;
 }
 
