@@ -49,11 +49,11 @@ void listarray_push(ListArray stack, void *value);
 void * listarray_pop(ListArray stack);
 
 
-// size_t listarray_max(ListArray list);
-//
-// size_t listarray_min(ListArray list);
-//
-//
+size_t listarray_max(ListArray list, ComparisonFunction comparison);
+
+size_t listarray_min(ListArray list, ComparisonFunction comparison);
+
+
 // ListArray listarray_concat(ListArray one, ListArray another);
 //
 // ListArray listarray_union(ListArray one, ListArray another);

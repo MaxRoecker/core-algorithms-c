@@ -208,3 +208,35 @@ void listarray_push(ListArray stack, void *value) {
 void * listarray_pop(ListArray stack) {
   return listarray_remove(stack, 0);
 }
+
+/**
+ * Returns the index of the maximum element based on given comparison.
+ */
+size_t listarray_max(ListArray list, ComparisonFunction comparison) {
+  size_t max = 0;
+  void *max_value = listarray_get(list, max);
+  for (size_t i = 1; i < listarray_lenght(list); i += 1) {
+    void *value = listarray_get(list, i);
+    if (comparison(value, max_value) > 0) {
+      max_value = value;
+      max = i;
+    }
+  }
+  return max;
+}
+
+/**
+ * Returns the index of the minimum element based on given comparison.
+ */
+size_t listarray_min(ListArray list, ComparisonFunction comparison) {
+  size_t min = 0;
+  void *min_value = listarray_get(list, min);
+  for (size_t i = 1; i < listarray_lenght(list); i += 1) {
+    void *value = listarray_get(list, i);
+    if (comparison(value, min_value) < 0) {
+      min_value = value;
+      min = i;
+    }
+  }
+  return min;
+}

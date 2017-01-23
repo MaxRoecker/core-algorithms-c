@@ -8,6 +8,19 @@ int zero = 0,
     three = 3,
     four = 4;
 
+char compare_ascending(void *const one, void *const another) {
+  int one_value = *((int *) one);
+  int another_value = *((int *) another);
+  char comparison = 0;
+  if (one_value < another_value) {
+    comparison = -1;
+  }
+  if (one_value > another_value) {
+    comparison = 1;
+  }
+  return comparison;
+}
+
 void test_creation_destruction() {
   // 8
   ListArray a = listarray_create();
@@ -119,8 +132,28 @@ void test_stack() {
   ok((listarray_pop(stack) == &one) == 1, "Must be equals.");
 }
 
+void test_max_min() {
+  // 4
+  void *full_ints[] = {&zero, &one, &two, &three, &four};
+  Array full_array = array_create_from(full_ints, 5);
+  ListArray full = listarray_create_of(full_array);
+  array_destroy(&full_array);
+
+  void *uniq_ints[] = {&zero};
+  Array uniq_array = array_create_from(uniq_ints, 1);
+  ListArray uniq = listarray_create_of(uniq_array);
+  array_destroy(&uniq_array);
+
+  ComparisonFunction comparison = &compare_ascending;
+
+  ok((listarray_max(full, comparison) == 4) == 1, "Must be equals.");
+  ok((listarray_max(uniq, comparison) == 0) == 1, "Must be equals.");
+  ok((listarray_min(full, comparison) == 0) == 1, "Must be equals.");
+  ok((listarray_min(uniq, comparison) == 0) == 1, "Must be equals.");
+}
+
 int main() {
-  plan(8 + 10 + 6 + 6 + 4 + 4);
+  plan(8 + 10 + 6 + 6 + 4 + 4 + 4);
 
   test_creation_destruction();
   test_get();
@@ -128,6 +161,7 @@ int main() {
   test_remove();
   test_queue();
   test_stack();
+  test_max_min();
 
   done_testing();
   return EXIT_SUCCESS;
