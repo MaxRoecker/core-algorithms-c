@@ -14,6 +14,7 @@ NODE_MOD=$(STRUCTURES_PACK)/node.h $(STRUCTURES_PACK)/node.c $(ARRAY_MOD)
 HEAP_MOD=$(STRUCTURES_PACK)/heap.h $(STRUCTURES_PACK)/heap.c $(ARRAY_MOD)
 LIST_ARRAY_MOD=$(STRUCTURES_PACK)/list_array.h $(STRUCTURES_PACK)/list_array.c $(ARRAY_MOD)
 QUEUE_ARRAY_MOD=$(STRUCTURES_PACK)/queue_array.h $(STRUCTURES_PACK)/queue_array.c $(LIST_ARRAY_MOD)
+STACK_ARRAY_MOD=$(STRUCTURES_PACK)/stack_array.h $(STRUCTURES_PACK)/stack_array.c $(LIST_ARRAY_MOD)
 SORTING_MOD=$(SORTING_PACK)/sorting.h $(SORTING_PACK)/sorting.c $(HEAP_MOD)
 
 test-memory:
@@ -40,6 +41,11 @@ test-structure-queue-array:
 	mkdir -p $(BIN)
 	$(CC) -o $(BIN)/queue_array_tests -x c -ltap tests/structures_queue_array_tests.c $(QUEUE_ARRAY_MOD)
 	./$(BIN)/queue_array_tests
+
+test-structure-stack-array:
+	mkdir -p $(BIN)
+	$(CC) -o $(BIN)/stack_array_tests -x c -ltap tests/structures_stack_array_tests.c $(STACK_ARRAY_MOD)
+	./$(BIN)/stack_array_tests
 
 test-structure-heap:
 	mkdir -p $(BIN)
