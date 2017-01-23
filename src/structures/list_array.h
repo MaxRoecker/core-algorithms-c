@@ -1,5 +1,5 @@
-#ifndef QUEUE_ARRAY_H
-#define QUEUE_ARRAY_H
+#ifndef LIST_ARRAY_H
+#define LIST_ARRAY_H
 #include "array.h"
 
 typedef struct {Array _array; size_t _begin; size_t _end;} ListArrayStruct;
